@@ -1,0 +1,118 @@
+import CombineHarvester.CombineTools.ch as ch
+
+def AddCommonSystematics(cb):
+  
+  signal = cb.cp().signals().process_set()
+  # rateParams
+  
+  # Theory uncertainties: signal
+#Luca   cb.cp().AddSyst(cb,
+#Luca        'pdf_Higgs_qqbar', 'lnN', ch.SystMap('process')
+#Luca         (['ZH_hbb'],1.016)
+#Luca         (['WH_hbb'],1.019))
+#Luca 
+#Luca   cb.cp().process(['ggZH_hbb']).AddSyst(cb,
+#Luca       'pdf_Higgs_gg', 'lnN', ch.SystMap()(1.024))
+#Luca 
+#Luca   cb.cp().process(signal).AddSyst(cb,
+#Luca       'BR_hbb', 'lnN', ch.SystMap()(1.005))
+#Luca 
+#Luca   cb.cp().process(['ggZH_hbb']).AddSyst(cb,
+#Luca       'QCDscale_ggZH', 'lnN',ch.SystMap()((1.251,0.811)))
+#Luca    
+#Luca   cb.cp().AddSyst(cb,
+#Luca       'QCDscale_VH', 'lnN', ch.SystMap('process') 
+#Luca       (['ZH_hbb'], (1.038,0.969)) 
+#Luca       (['WH_hbb'], (1.005,0.993)))
+#Luca 
+#Luca   # Theory uncertainties: backgrounds -> to be checked!
+#Luca   cb.cp().AddSyst(cb,
+#Luca        'pdf_qqbar', 'lnN', ch.SystMap('channel','process') 
+#Luca         (['Zee','Zmm'],['Zj0b','Zj1b','Zj2b','VVLF','VVHF','VV'], 1.01)
+#Luca         (['Znn'],['VVLF','VVHF'],1.01)
+#Luca         (['Wen','Wmn'],['VVLF','VVHF'],1.01)) 
+#Luca 
+#Luca   cb.cp().AddSyst(cb,
+#Luca        'pdf_gg', 'lnN', ch.SystMap('channel','process')
+#Luca        (['Zee','Zmm','Znn'],['TT','s_Top','QCD'], 1.01)
+#Luca        (['Wen','Wmn'], ['s_Top'],1.01))
+#Luca 
+#Luca   cb.cp().AddSyst(cb,
+#Luca       'QCDscale_ttbar', 'lnN', ch.SystMap('channel','process') 
+#Luca       #(['Zee','Zmm','Wen','Wmn','Znn'],['s_Top'], 1.06)
+#Luca        (['Zee','Zmm','Wen','Wmn','Znn'],['TT'],1.06)
+#Luca       ) 
+
+
+###########################################
+### Uncertainties for 2017
+###########################################
+
+def AddSystematics2017(cb):
+
+  #Experimental uncertainties
+  cb.cp().AddSyst(cb,'lumi_13TeV','lnN', ch.SystMap()(1.023))
+  # EXCLUDE PROBLEMATIC NUISANCES for 2017 shapes
+#Luca  cb.FilterSysts(lambda x: 
+#Luca                        x.channel() in ['Wen','Wmn'] and 
+#Luca                        x.process() in ['s_Top','TT','Wj0b','Wj1b','Wj2b','Zj0b','Zj1b','Zj2b','VVHF','VVLF','WH_hbb','ZH_hbb'] and 
+#Luca                        #x.bin_id() in [1,3,5,6,7] and 
+#Luca                        x.bin_id() in [1,2,3,4,5,6,7] and 
+#Luca                        x.name() in 'CMS_scale_j_PileUpPtBB_13TeV'
+#Luca                        )
+ 
+
+###########################################
+### Uncertainties for 2016
+###########################################
+
+def AddSystematics2016(cb):
+
+  #Experimental uncertainties
+  cb.cp().AddSyst( cb,'lumi_13TeV_2016','lnN', ch.SystMap()(1.025))
+
+  # EXCLUDE PROBLEMATIC NUISANCES for 2016 shapes
+  # cb.FilterSysts(lambda x: 
+  #                       x.name() in 'CMS_res_j_13TeV_2016'
+  #                       )
+#Luca  cb.FilterSysts(lambda x: 
+#Luca                        x.process() in ['VVLF'] and 
+#Luca                        x.type() in 'shape'
+#Luca                        )
+
+
+#Luca # SCALE FACTORS RATEPARAM
+#Luca 
+#Luca # TT Zll
+#Luca   cb.cp().channel(['Zee','Zmm']).process(['TT']).AddSyst(cb,
+#Luca                                                          'SF_TT_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')
+#Luca                                                          ([1,3,5,7,9,11,13],1.0))
+#Luca 
+#Luca   cb.cp().channel(['Zee','Zmm']).process(['TT']).AddSyst(cb,
+#Luca                                                          'SF_TT_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')
+#Luca                                                          ([2,4,6,8,10,12,14],1.0))
+#Luca 
+#Luca # ZJets Zll
+#Luca   cb.cp().channel(['Zee','Zmm']).process(['ZJets']).AddSyst(cb,
+#Luca                                                             'SF_ZJets_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')
+#Luca                                                             ([1,3,5,7,9,11,13],1.0))
+#Luca   
+#Luca   cb.cp().channel(['Zee','Zmm']).process(['ZJets']).AddSyst(cb,
+#Luca                                                             'SF_ZJets_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')
+#Luca                                                             ([2,4,6,8,10,12,14],1.0))
+#Luca   
+#Luca   # TT Wln
+#Luca   cb.cp().channel(['Wen','Wmn']).process(['TT']).AddSyst(cb,
+#Luca                                                          'SF_TT_Wln_2016', 'rateParam', ch.SystMap('bin_id')
+#Luca                                                          (range(1,8),1.0))
+#Luca   
+#Luca # WJets Wln
+#Luca   cb.cp().channel(['Wen','Wmn']).process(['WJets']).AddSyst(cb,
+#Luca                                                             'SF_WJets_Wln_2016', 'rateParam', ch.SystMap('bin_id')
+#Luca                                                             (range(1,8),1.0))
+#Luca 
+#Luca 
+
+#Luca #Set a sensible range for the rate params
+#Luca for syst in cb.cp().syst_type(["rateParam"]).syst_name_set():
+#Luca   cb.GetParameter(syst).set_range(0.0,5.0)
