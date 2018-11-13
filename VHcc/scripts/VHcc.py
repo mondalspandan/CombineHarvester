@@ -151,19 +151,19 @@ input_folders = {
 
 if not args.doVV:
   bkg_procs = {
-    'Wen' : ['WH_hbb','ZH_hbb','ggZH_hbb','s_Top','TT','WJets','VV'],
-    'Wmn' : ['WH_hbb','ZH_hbb','ggZH_hbb','s_Top','TT','WJets','VV'],
-    'Zmm' : ['ZH_hbb','ggZH_hbb','s_Top','TT','VV','ZJets'],
-    'Zee' : ['ZH_hbb','ggZH_hbb','s_Top','TT','VV','ZJets'],
-    'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','VV','ZJets','QCD'],
+    'Wen' : ['WH_hbb','ZH_hbb','ggZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','VVcc'],
+    'Wmn' : ['WH_hbb','ZH_hbb','ggZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','VVcc'],
+    'Zmm' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVLF','VVbb','VVcc'],
+    'Zee' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVLF','VVbb','VVcc'],
+    'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','VVcc','QCD'],
   }
 else:
   bkg_procs = {
-    'Wen' : ['s_Top','TT','WJets','VV','ZJets','WH_hbb','ZH_hbb','ggZH_hbb','WH_hcc','ZH_hcc','ggZH_hcc'],
-    'Wmn' : ['s_Top','TT','WJets','VV','ZJets','WH_hbb','ZH_hbb','ggZH_hbb','WH_hcc','ZH_hcc','ggZH_hcc'],
-    'Zmm' : ['s_Top','TT','VV','ZJets','ZH_hbb','ggZH_hbb','ZH_hcc','ggZH_hcc'],
-    'Zee' : ['s_Top','TT','VV','ZJets','ZH_hbb','ggZH_hbb','ZH_hcc','ggZH_hcc'],
-    'Znn' : ['s_Top','TT','VV','ZJets','QCD','ZH_hbb','ggZH_hbb','WH_hbb'],
+    'Wen' : ['WH_hbb','ZH_hbb','ggZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb'],
+    'Wmn' : ['WH_hbb','ZH_hbb','ggZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb'],
+    'Zmm' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVLF','VVbb'],
+    'Zee' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVLF','VVbb'],
+    'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','QCD'],
   }
 
 if not args.doVV:
@@ -184,11 +184,11 @@ if not args.doVV:
   }
 else:
   sig_procs = {
-    'Wen' : ['VVHF'],
-    'Wmn' : ['VVHF'],
-    'Zmm' : ['VVHF'],
-    'Zee' : ['VVHF'],
-    'Znn' : ['VVHF']
+    'Wen' : ['VVcc'],
+    'Wmn' : ['VVcc'],
+    'Zmm' : ['VVcc'],
+    'Zee' : ['VVcc'],
+    'Znn' : ['VVcc']
   }
 
 if args.mjj:
@@ -202,13 +202,13 @@ if args.mjj:
 #        (5, 'Zhf_high_Zmm'), (6, 'Zhf_low_Zmm'), (7,'ttbar_high_Zmm'), (8,'ttbar_low_Zmm')
         ],
       'Wen' : [
-        (1, 'SR_Wen')#, (3,'wlfWen'), (5,'whfWenHigh'), (6,'whfWenLow'), (7,'ttWen')
+        (1, 'SR_Wenu'), (3,'Wlf_Wenu'), (5,'Whf_Wenu'), (7,'ttbar_Wenu')
         ],
       'Wmn' : [
-        (1, 'SR_Wmn')#, (3,'wlfWmn'), (5,'whfWmnHigh'), (6,'whfWmnLow'), (7,'ttWmn')
+        (1, 'SR_Wmunu'), (3,'Wlf_Wmunu'), (5,'Whf_Wmunu'), (7,'ttbar_Wmunu')
         ],
       'Znn' : [
-        (1, 'SR_Znn')#, (3,'wlfWmn'), (5,'whfWmnHigh'), (6,'whfWmnLow'), (7,'ttWmn')
+        (1, 'SR_Znn'), (3,'Vlf_Znn'), (5,'Vhf_Znn'), (7,'ttbar_Znn')
         ]
       }
     
@@ -242,17 +242,19 @@ for chn in chns:
 
 # play with rebinning (and/or cutting) of the shapes
    
-#if args.rebinning_scheme == 'v2-whznnh-hf-dnn': # all channels: 1bin in TT/LF, 2bins in HF
-#    binning=np.linspace(0.0,1.0,num=2)
-#    print 'binning in CR for LF,TT fitting variable:',binning,'for all the channels'
-#    cb.cp().bin_id([3,4,7,8]).VariableRebin(binning)
-#    binning=np.linspace(0.0,1.0,num=3)
-#    print 'binning in CR for HF fitting variable:',binning,'for all Zll and Znn channels'
-#    cb.cp().channel(['Zee','Zmm']).bin_id([5,6]).VariableRebin(binning)
-#    binning=np.linspace(0.0,5.0,num=6)
-#    print 'binning in CR for HF fitting variable:',binning,'for all the channels'
-#    cb.cp().channel(['Wmn','Wen','Znn']).bin_id([5,6]).VariableRebin(binning) 
-#   
+if args.rebinning_scheme == '5bins': # all channels: 1bin in TT/LF, 2bins in HF
+#  binning=np.linspace(0.0,1.0,num=2) 
+#  print 'binning in CR for LF,TT fitting variable:',binning,'for all the channels'
+#  cb.cp().bin_id([3,4,7,8]).VariableRebin(binning)
+
+  binning=np.linspace(50.0,200.0,num=6)
+  print 'binning in SR fitting variable:',binning,'for all Zll and Znn channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,2]).VariableRebin(binning)
+  
+#  binning=np.linspace(0.0,5.0,num=6)
+#  print 'binning in CR for HF fitting variable:',binning,'for all the channels'
+#  cb.cp().channel(['Wmn','Wen','Znn']).bin_id([5,6]).VariableRebin(binning) 
+   
 
 cb.FilterProcs(lambda x: drop_zero_procs(cb,x))
 #Luca cb.FilterSysts(lambda x: drop_zero_systs(x))
@@ -338,4 +340,8 @@ if 'Wen' in chns and 'Wmn' in chns:
 
 if 'Zee' in chns and 'Zmm' in chns:
   writer.WriteCards("Zll",cb.cp().channel(['Zee','Zmm']))
+
+if 'Znn' in chns:
+  writer.WriteCards("Znn",cb.cp().channel(['Znn']))
+
 #Luca  writer.WriteCards("Zll_CRonly",cb.cp().bin_id([3,4,5,6,7,8]).channel(['Zee','Zmm']))
