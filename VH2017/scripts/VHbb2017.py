@@ -228,7 +228,7 @@ if not args.mjj:
       ],
       'Znn' : [
         (1, 'Znn_13TeV_Signal'), (3, 'Znn_13TeV_Zlight'), (5, 'Znn_13TeV_Zbb'), (7,'Znn_13TeV_TT')
-      ],
+        ],
      'Wen' : [
         (1, 'WenHighPt'), (3,'wlfWen'), (5,'whfWenHigh'), (6,'whfWenLow'), (7,'ttWen')
       ],

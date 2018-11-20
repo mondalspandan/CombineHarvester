@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 
 import CombineHarvester.CombineTools.ch as ch
@@ -28,6 +29,12 @@ def drop_zero_systs(syst):
     print 'Dropping systematic ',syst.name(),' for region ', syst.bin(), ' ,process ', syst.process(), '. up norm is ', syst.value_u() , ' and down norm is ', syst.value_d()
     #chob.FilterSysts(lambda sys: matching_proc(proc,sys)) 
   return null_yield
+
+def drop_znnqcd(chob,proc):
+  drop_process =  proc.process()=='QCD' and proc.channel()=='Znn' and proc.bin_id()==5
+  if(drop_process):
+    chob.FilterSysts(lambda sys: matching_proc(proc,sys)) 
+  return drop_process
 
 
 def matching_proc(p,s):
@@ -72,7 +79,7 @@ parser.add_argument(
 parser.add_argument(
  '--auto_rebin', action='store_true', help="""Rebin automatically?""")
 parser.add_argument(
- '--bbb_mode', default=0, type=int, help="""Sets the type of bbb uncertainty setup. 0: no bin-by-bins, 1: autoMCStats""")
+ '--bbb_mode', default=1, type=int, help="""Sets the type of bbb uncertainty setup. 0: no bin-by-bins, 1: autoMCStats""")
 parser.add_argument(
  '--zero_out_low', action='store_true', help="""Zero-out lowest SR bins (purely for the purpose of making yield tables""")
 parser.add_argument(
@@ -106,18 +113,32 @@ mass = ['125']
 
 chns = []
 
+#Luca if args.channel=="all":
+#Luca   chns = ['Wen','Wmn','Zee','Zmm','Znn']
+#Luca if 'Zll' in args.channel or 'Zmm' in args.channel:
+#Luca   chns.append('Zmm')
+#Luca if 'Zll' in args.channel  or 'Zee' in args.channel:
+#Luca   chns.append('Zee')
+#Luca if 'Wln' in args.channel or 'Wmn' in args.channel:
+#Luca   chns.append('Wmn')
+#Luca if 'Wln' in args.channel or 'Wen' in args.channel:
+#Luca   chns.append('Wen')
+#Luca if 'Znn' in args.channel or 'Znn' in args.channel:
+#Luca   chns.append('Znn')
+
 if args.channel=="all":
-  chns = ['Wen','Wmn','Zee','Zmm','Znn']
+  chns = ['Wen','Wmn','Znn','Zee','Zmm']
 if 'Zll' in args.channel or 'Zmm' in args.channel:
   chns.append('Zmm')
 if 'Zll' in args.channel  or 'Zee' in args.channel:
   chns.append('Zee')
-if 'Wln' in args.channel or 'Wmn' in args.channel:
+if 'Wln' in args.channel or 'Wmn' in args.channel or 'Znn' in args.channel:
   chns.append('Wmn')
-if 'Wln' in args.channel or 'Wen' in args.channel:
+if 'Wln' in args.channel or 'Wen' in args.channel or 'Znn' in args.channel:
   chns.append('Wen')
-if 'Znn' in args.channel or 'Znn' in args.channel:
+if 'Znn' in args.channel:
   chns.append('Znn')
+
 
 year = args.year
 if year is not "2016" and not "2017":
@@ -151,37 +172,32 @@ input_folders = {
 
 if not args.doVV:
   bkg_procs = {
-    'Wen' : ['WH_hbb','ZH_hbb','ggZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','VVcc'],
-    'Wmn' : ['WH_hbb','ZH_hbb','ggZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','VVcc'],
+    'Wen' : ['WH_hbb','ZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','VVcc'],
+    'Wmn' : ['WH_hbb','ZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','VVcc'],
     'Zmm' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVLF','VVbb','VVcc'],
     'Zee' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVLF','VVbb','VVcc'],
     'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','VVcc','QCD'],
+    #'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','VVcc'],
   }
 else:
   bkg_procs = {
-    'Wen' : ['WH_hbb','ZH_hbb','ggZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb'],
-    'Wmn' : ['WH_hbb','ZH_hbb','ggZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb'],
+    'Wen' : ['WH_hbb','ZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb'],
+    'Wmn' : ['WH_hbb','ZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb'],
     'Zmm' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVLF','VVbb'],
     'Zee' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVLF','VVbb'],
     'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb','QCD'],
+    #'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVLF','VVbb'],
   }
 
 if not args.doVV:
   sig_procs = {
-    'Wen' : ['WH_hcc','ZH_hcc','ggZH_hcc'],
-    'Wmn' : ['WH_hcc','ZH_hcc','ggZH_hcc'],
+    'Wen' : ['WH_hcc','ZH_hcc'],
+    'Wmn' : ['WH_hcc','ZH_hcc'],
     'Zmm' : ['ZH_hcc','ggZH_hcc'],
     'Zee' : ['ZH_hcc','ggZH_hcc'],
     'Znn' : ['ZH_hcc','ggZH_hcc','WH_hcc']
     }
   
-  sig_procs_ren = {
-    'Wen' : ['WH_lep','ZH_hbb'],
-    'Wmn' : ['WH_lep','ZH_hbb'],
-    'Zmm' : ['ZH_hbb','ggZH_hbb'],
-    'Zee' : ['ZH_hbb','ggZH_hbb'],
-    'Znn' : ['ZH_hbb','ggZH_hbb','WH_lep']
-  }
 else:
   sig_procs = {
     'Wen' : ['VVcc'],
@@ -192,14 +208,18 @@ else:
   }
 
 if args.mjj:
+
+    # don't fit QCD anywhere for Mjj!
+    bkg_procs['Znn'].remove('QCD')
+
     cats = {
       'Zee' : [
-        (1, 'SR_high_Zee'), (2, 'SR_low_Zee')#, (3, 'Zlf_high_Zee'), (4,'Zlf_low_Zee'),
-#        (5, 'Zhf_high_Zee'), (6, 'Zhf_low_Zee'), (7,'ttbar_high_Zee'), (8,'ttbar_low_Zee')
+        (1, 'SR_high_Zee'), (2, 'SR_low_Zee'), (3, 'Zlf_high_Zee'), (4,'Zlf_low_Zee'),
+        (5, 'Zhf_high_Zee'), (6, 'Zhf_low_Zee'), (7,'ttbar_high_Zee'), (8,'ttbar_low_Zee')
         ],
       'Zmm' : [
-        (1, 'SR_high_Zmm'), (2, 'SR_low_Zmm')#, (3, 'Zlf_high_Zmm'), (4,'Zlf_low_Zmm'),
-#        (5, 'Zhf_high_Zmm'), (6, 'Zhf_low_Zmm'), (7,'ttbar_high_Zmm'), (8,'ttbar_low_Zmm')
+        (1, 'SR_high_Zmm'), (2, 'SR_low_Zmm'), (3, 'Zlf_high_Zmm'), (4,'Zlf_low_Zmm'),
+        (5, 'Zhf_high_Zmm'), (6, 'Zhf_low_Zmm'), (7,'ttbar_high_Zmm'), (8,'ttbar_low_Zmm')
         ],
       'Wen' : [
         (1, 'SR_Wenu'), (3,'Wlf_Wenu'), (5,'Whf_Wenu'), (7,'ttbar_Wenu')
@@ -217,6 +237,9 @@ for chn in chns:
   cb.AddObservations( ['*'], ['vhcc'], ['13TeV'], [chn], cats[chn])
   cb.AddProcesses( ['*'], ['vhcc'], ['13TeV'], [chn], bkg_procs[chn], cats[chn], False)
   cb.AddProcesses( ['*'], ['vhcc'], ['13TeV'], [chn], sig_procs[chn], cats[chn], True)
+
+# Filter QCD from processes in Znn
+cb.FilterProcs(lambda x: x.bin_id()==1 and x.channel()=='Znn' and x.process()=='QCD')
   
 systs.AddCommonSystematics(cb)
 if year=='2016':
@@ -241,60 +264,83 @@ for chn in chns:
       file, 'BDT_$BIN_$PROCESS', 'BDT_$BIN_$PROCESS_$SYSTEMATIC')
 
 # play with rebinning (and/or cutting) of the shapes
-   
-if args.rebinning_scheme == '5bins': # all channels: 1bin in TT/LF, 2bins in HF
-#  binning=np.linspace(0.0,1.0,num=2) 
-#  print 'binning in CR for LF,TT fitting variable:',binning,'for all the channels'
-#  cb.cp().bin_id([3,4,7,8]).VariableRebin(binning)
+if args.rebinning_scheme == 'zll-rebin':
+  binning=np.linspace(0.0,1.0,num=16)
+  print 'binning in TT-CR,HF-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([5,6,7,8]).VariableRebin(binning)
 
-  binning=np.linspace(50.0,200.0,num=6)
-  print 'binning in SR fitting variable:',binning,'for all Zll and Znn channels'
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,2]).VariableRebin(binning)
+  binning=np.linspace(0.05,1.0,num=16)
+  print 'binning in LF-CR fitting variable (Jet_CvsL):',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([3,4]).VariableRebin(binning)
+
+   
+if args.rebinning_scheme == 'zll-fix': # all channels: 1bin in TT/LF, 2bins in HF
+  #binning=np.linspace(50.0,200.0,num=6)
+  #print 'binning in SR fitting variable (mjj):',binning,'for Zll channels'
+  #cb.cp().channel(['Zee','Zmm']).bin_id([1,2]).VariableRebin(binning)
+
+  #Luca binning=np.linspace(0.0,1.0,num=5)
+  #Luca print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
+  #Luca cb.cp().channel(['Zee','Zmm']).bin_id([7,8]).VariableRebin(binning)
+
+  binning=np.linspace(0.0,1.0,num=2)
+  print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([8]).VariableRebin(binning)
   
-#  binning=np.linspace(0.0,5.0,num=6)
-#  print 'binning in CR for HF fitting variable:',binning,'for all the channels'
-#  cb.cp().channel(['Wmn','Wen','Znn']).bin_id([5,6]).VariableRebin(binning) 
+  binning=np.linspace(0.0,1.0,num=2)
+  print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([7]).VariableRebin(binning)
+  
+  binning=np.linspace(0.0,1.0,num=4)
+  print 'binning in HF-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([5,6]).VariableRebin(binning)
+
+  binning=np.linspace(0.05,0.4,num=2)
+  print 'binning in LF-CR fitting variable (Jet_CvsL):',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([3,4]).VariableRebin(binning)
+
+if args.rebinning_scheme == 'znn-rebin': # all channels: 1bin in TT/LF, 2bins in HF
+
+  binning=np.linspace(0.0,1.0,num=11) 
+  print 'binning in CR for LF,TT fitting variable:',binning,'for Znn channelrs'
+  cb.cp().bin_id([3,7]).VariableRebin(binning)
+  
+  binning=np.linspace(0.0,1.0,num=6)
+  print 'binning in CR for HF fitting variable:',binning,'for Znn channels'
+  cb.cp().channel(['Znn']).bin_id([5]).VariableRebin(binning) 
    
 
 cb.FilterProcs(lambda x: drop_zero_procs(cb,x))
-#Luca cb.FilterSysts(lambda x: drop_zero_systs(x))
+cb.FilterSysts(lambda x: drop_zero_systs(x))
+#AUTHORIZED PERSON ONLY!! Drop QCD in Z+HF CR
+cb.FilterProcs(lambda x: drop_znnqcd(cb,x))
 
-#Luca  if year=='2016':
-#Luca      cb.cp().syst_name(["CMS_res_j_13TeV_2016"]).ForEachProc(lambda x:symmetrise_syst(cb,x,'CMS_res_j_13TeV_2016'))
-#Luca  if year=='2017':
-#Luca      cb.cp().syst_name(["CMS_res_j_13TeV"]).ForEachProc(lambda x:symmetrise_syst(cb,x,'CMS_res_j_13TeV'))
-#Luca  
-#Luca  if year=='2017':
-#Luca      cb.cp().ForEachSyst(lambda x: remove_norm_effect(x) if x.name()=='CMS_vhbb_puWeight' else None)
-#Luca  
-#Luca  if args.doVV:
-#Luca      cb.FilterSysts(lambda x: x.name() in "CMS_vhbb_VV")
-#Luca  
-#Luca  if year=='2017':
-#Luca      cb.cp().process(['Wj0b']).ForEachProc(lambda x: increase_bin_errors(x))
-#Luca      cb.cp().channel(['Wen','Wmn']).process(['VVHF','VVLF']).ForEachProc(lambda x: increase_bin_errors(x))
-#Luca  
-#Luca  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj0b']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_W0b_vhbb_vjetnlodetajjrw_13TeV')
-#Luca  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj1b']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_W1b_vhbb_vjetnlodetajjrw_13TeV')
-#Luca  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj2b']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_W2b_vhbb_vjetnlodetajjrw_13TeV')
-#Luca  cb.cp().channel(['Zee','Zmm','Znn']).process(['Zj0b']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Z0b_vhbb_vjetnlodetajjrw_13TeV')
-#Luca  cb.cp().channel(['Zee','Zmm','Znn']).process(['Zj1b']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Z1b_vhbb_vjetnlodetajjrw_13TeV')
-#Luca  cb.cp().channel(['Zee','Zmm','Znn']).process(['Zj2b']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Z2b_vhbb_vjetnlodetajjrw_13TeV')
-#Luca  cb.cp().signals().RenameSystematic(cb,'CMS_res_j_reg_13TeV','CMS_signal_resolution_13TeV')
-#Luca  cb.cp().channel(['Wen','Wmn','Znn']).RenameSystematic(cb,'CMS_res_j_reg_13TeV','CMS_NoKinFit_res_j_reg_13TeV')
-#Luca  cb.cp().channel(['Zee','Zmm']).RenameSystematic(cb,'CMS_res_j_reg_13TeV','CMS_KinFit_res_j_reg_13TeV')
-#Luca  
-#Luca  
-#Luca  cb.SetGroup('signal_theory',['pdf_Higgs.*','BR_hbb','QCDscale_ggZH','QCDscale_VH','CMS_vhbb_boost.*','.*LHE_weights.*ZH.*','.*LHE_weights.*WH.*','.*LHE_weights.*ggZH.*'])
-#Luca  cb.SetGroup('bkg_theory',['pdf_qqbar','pdf_gg','CMS_vhbb_VV','CMS_vhbb_ST','.*LHE_weights.*TT.*','.*LHE_weights.*VV.*','.*LHE_weights.*Zj0b.*','LHE_weights.*Zj1b.*','LHE_weights.*Zj2b.*','LHE_weights.*Wj0b.*','LHE_weights.*Wj1b.*','LHE_weights.*Wj2b.*','LHE_weights.*s_Top.*','LHE_weights.*QCD.*'])
-#Luca  cb.SetGroup('sim_modelling',['CMS_vhbb_ptwweights.*','CMS_vhbb_vjetnlodetajjrw.*'])
-#Luca  cb.SetGroup('jes',['CMS_scale_j.*'])
-#Luca  cb.SetGroup('jer',['CMS_res_j.*','CMS_signal_resolution.*'])
-#Luca  cb.SetGroup('btag',['.*bTagWeight.*JES.*','.*bTagWeight.*HFStats.*','.*bTagWeight.*LF_.*','.*bTagWeight.*cErr.*'])
-#Luca  cb.SetGroup('mistag',['.*bTagWeight.*LFStats.*','.*bTagWeight.*HF_.*'])
-#Luca  cb.SetGroup('lumi',['lumi_13TeV','.*puWeight.*'])
-#Luca  cb.SetGroup('lep_eff',['.*eff_e.*','.*eff_m.*'])
-#Luca  cb.SetGroup('met',['.*MET.*'])
+if args.doVV:
+    cb.FilterSysts(lambda x: x.name() in "CMS_vhbb_VV")
+
+cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_ll']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Wj_ll_vhbb_vjetnlodetajjrw_13TeV')
+cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_blc']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Wj_blc_vhbb_vjetnlodetajjrw_13TeV')
+cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_bbc']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Wj_bbc_vhbb_vjetnlodetajjrw_13TeV')
+cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_cc']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Wj_cc_vhbb_vjetnlodetajjrw_13TeV')
+cb.cp().channel(['Zee','Zmm','Znn']).process(['Zj_ll']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Zj_ll_vhbb_vjetnlodetajjrw_13TeV')
+cb.cp().channel(['Zee','Zmm','Znn']).process(['Zj_blc']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Zj_blc_vhbb_vjetnlodetajjrw_13TeV')
+cb.cp().channel(['Zee','Zmm','Znn']).process(['Zj_bbc']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Zj_bbc_vhbb_vjetnlodetajjrw_13TeV')
+cb.cp().channel(['Zee','Zmm','Znn']).process(['Zj_cc']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Zj_cc_vhbb_vjetnlodetajjrw_13TeV')
+#Luca cb.cp().signals().RenameSystematic(cb,'CMS_res_j_reg_13TeV','CMS_signal_resolution_13TeV')
+#Luca cb.cp().channel(['Wen','Wmn','Znn']).RenameSystematic(cb,'CMS_res_j_reg_13TeV','CMS_NoKinFit_res_j_reg_13TeV')
+#Luca cb.cp().channel(['Zee','Zmm']).RenameSystematic(cb,'CMS_res_j_reg_13TeV','CMS_KinFit_res_j_reg_13TeV')
+
+
+cb.SetGroup('signal_theory',['pdf_Higgs.*','BR_hbb','QCDscale_ggZH','QCDscale_VH','CMS_vhbb_boost.*','.*LHE_weights.*ZHcc*','.*LHE_weights.*WHcc*','.*LHE_weights.*ggZHcc*'])
+cb.SetGroup('bkg_theory',['pdf_qqbar','pdf_gg','CMS_vhbb_VV','CMS_vhbb_ST','.*LHE_weights.*ZHbb*','.*LHE_weights.*WHbb*','.*LHE_weights.*ggZHbb*','.*LHE_weights.*TT.*','.*LHE_weights.*VV.*','.*LHE_weights.*Zj_ll.*','LHE_weights.*Zj_blc.*','LHE_weights.*Zj_bbc.*','LHE_weights.*Zj_cc.*','LHE_weights.*Wj_ll.*','LHE_weights.*Wj_blc.*','LHE_weights.*Wj_bbc.*','LHE_weights.*Wj_cc.*','LHE_weights.*s_Top.*','LHE_weights.*QCD.*'])
+cb.SetGroup('sim_modelling',['CMS_vhbb_ptwweights.*','CMS_vhbb_vjetnlodetajjrw.*'])
+cb.SetGroup('jes',['CMS_scale_j.*'])
+cb.SetGroup('jer',['CMS_res_j.*','CMS_signal_resolution.*'])
+cb.SetGroup('btag',['.*bTagWeight.*JES.*','.*bTagWeight.*HFStats.*','.*bTagWeight.*LF_.*','.*bTagWeight.*cErr.*'])
+cb.SetGroup('mistag',['.*bTagWeight.*LFStats.*','.*bTagWeight.*HF_.*'])
+cb.SetGroup('lumi',['lumi_13TeV','.*puWeight.*'])
+cb.SetGroup('lep_eff',['.*eff_e.*','.*eff_m.*'])
+cb.SetGroup('met',['.*MET.*'])
 
 
 
@@ -308,15 +354,15 @@ rebin = ch.AutoRebin().SetBinThreshold(0.).SetBinUncertFraction(1.0).SetRebinMod
 #print binning
 
 
-#Luca if args.auto_rebin:
-#Luca   rebin.Rebin(cb, cb)
-#Luca 
+if args.auto_rebin:
+  rebin.Rebin(cb, cb)
+  
 #Luca if args.zero_out_low:
 #Luca   range_to_drop = {'Wen':[[1,0,0.5]],'Wmn':[[1,0,0.5]],'Znn':[[1,0,0.5]],'Zee':[[1,0,0.5],[2,0,0.5]],'Zmm':[[1,0,0.5],[2,0,0.5]]} #First number is bin_id, second number lower bound of range to drop, third number upper bound of range to drop
 #Luca   for chn in chns:
 #Luca     for i in range(len(range_to_drop[chn])):
 #Luca       cb.cp().channel([chn]).bin_id([range_to_drop[chn][i][0]]).ZeroBins(range_to_drop[chn][i][1],range_to_drop[chn][i][2])
-
+      
 ch.SetStandardBinNames(cb)
 
 writer=ch.CardWriter("output/" + args.output_folder + year + "/$TAG/$BIN"+year+".txt",
@@ -333,15 +379,23 @@ for chn in chns:
   writer.WriteCards(chn,cb.cp().channel([chn]))
 
 
+if 'Znn' in chns:
+  #writer.WriteCards("Znn",cb.cp().FilterAll(lambda x: not (x.channel()=='Znn' or ( (x.channel() in ['Wmn','Wen']) and x.bin_id() in [3,4,5,6,7,8]))))
+  if args.mjj:
+    writer.WriteCards("Znn",cb.cp().channel(['Znn']))
+    writer.WriteCards("Znn",cb.cp().bin_id([3,7]).channel(['Wmn','Wen']))
+      #Luca writer.WriteCards("Znn_CRonly",cb.cp().bin_id([3,4,5,6,7,8]).channel(['Znn','Wmn','Wen']))
+  else:
+    writer.WriteCards("Znn",cb.cp().channel(['Znn']))
+    writer.WriteCards("Znn",cb.cp().bin_id([5,6,7,8]).channel(['Wmn','Wen']))
+    writer.WriteCards("Znn_CRonly",cb.cp().bin_id([3,7]).channel(['Znn']))
+      #Luca writer.WriteCards("Znn_CRonly",cb.cp().bin_id([5,6,7,8]).channel(['Wmn','Wen']))
+    
 #Zll and Wln:
 if 'Wen' in chns and 'Wmn' in chns:
   writer.WriteCards("Wln",cb.cp().channel(['Wen','Wmn']))
-#Luca  writer.WriteCards("Wln_CRonly",cb.cp().bin_id([3,4,5,6,7,8]).channel(['Wen','Wmn']))
+  #Luca writer.WriteCards("Wln_CRonly",cb.cp().bin_id([3,4,5,6,7,8]).channel(['Wen','Wmn']))
 
 if 'Zee' in chns and 'Zmm' in chns:
   writer.WriteCards("Zll",cb.cp().channel(['Zee','Zmm']))
-
-if 'Znn' in chns:
-  writer.WriteCards("Znn",cb.cp().channel(['Znn']))
-
-#Luca  writer.WriteCards("Zll_CRonly",cb.cp().bin_id([3,4,5,6,7,8]).channel(['Zee','Zmm']))
+  #Luca writer.WriteCards("Zll_CRonly",cb.cp().bin_id([3,4,5,6,7,8]).channel(['Zee','Zmm']))
