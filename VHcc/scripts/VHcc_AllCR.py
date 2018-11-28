@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 
 import CombineHarvester.CombineTools.ch as ch
@@ -97,7 +96,7 @@ parser.add_argument(
 parser.add_argument(
  '--extra_folder', default='', help="""Additional folder where cards are""")
 parser.add_argument(
- '--rebinning_scheme', default='v2-whznnh-hf-dnn', help="""Rebinning scheme for CR and SR distributions""")
+ '--rebinning_scheme', default='', help="""Rebinning scheme for CR and SR distributions""")
 parser.add_argument(
  '--doVV', default=False, help="""if True assume we are running the VZ(cc) analysis""")
 parser.add_argument(
@@ -215,17 +214,21 @@ if args.mjj:
     cats = {
       'Zee' : [
         (1, 'SR_high_Zee'), (2, 'SR_low_Zee'), (3, 'Zlf_high_Zee'), (4,'Zlf_low_Zee'),
-        (5, 'Zhf_high_Zee'), (6, 'Zhf_low_Zee'), (7,'ttbar_high_Zee'), (8,'ttbar_low_Zee'),(9,'Zcc_high_Zee'), (10,'Zcc_low_Zee')
+        (5, 'Zhf_high_Zee'), (6, 'Zhf_low_Zee'), 
+        (7,'ttbar_high_Zee'), (8,'ttbar_low_Zee'),(9,'Zcc_high_Zee'), (10,'Zcc_low_Zee')
+        #(5,'Zcc_high_Zee'), (6,'Zcc_low_Zee'),(7,'ttbar_high_Zee'), (8,'ttbar_low_Zee')
         ],
       'Zmm' : [
         (1, 'SR_high_Zmm'), (2, 'SR_low_Zmm'), (3, 'Zlf_high_Zmm'), (4,'Zlf_low_Zmm'),
-        (5, 'Zhf_high_Zmm'), (6, 'Zhf_low_Zmm'), (7,'ttbar_high_Zmm'), (8,'ttbar_low_Zmm'),(9,'Zcc_high_Zmm'), (10,'Zcc_low_Zmm')
+        (5, 'Zhf_high_Zmm'), (6, 'Zhf_low_Zmm'), 
+        (7,'ttbar_high_Zmm'), (8,'ttbar_low_Zmm'),(9,'Zcc_high_Zmm'), (10,'Zcc_low_Zmm')
+        #(5,'Zcc_high_Zmm'), (6,'Zcc_low_Zmm'),(7,'ttbar_high_Zmm'), (8,'ttbar_low_Zmm'),
         ],
       'Wen' : [
-        (1, 'SR_Wenu'), (3,'Wlf_Wenu'), (5,'Whf_Wenu'), (7,'ttbar_Wenu'),(9,'Zcc_Wenu')
+        (1, 'SR_Wenu'), (3,'Wlf_Wenu'), (5,'Whf_Wenu'), (7,'ttbar_Wenu'), (9,'Zcc_Wenu')
         ],
       'Wmn' : [
-        (1, 'SR_Wmunu'), (3,'Wlf_Wmunu'), (5,'Whf_Wmunu'), (7,'ttbar_Wmunu'),(9,'Zcc_Wmunu')
+        (1, 'SR_Wmunu'), (3,'Wlf_Wmunu'), (5,'Whf_Wmunu'), (7,'ttbar_Wmunu'), (9,'Zcc_Wmunu')
         ],
       'Znn' : [
         (1, 'SR_Znn'), (3,'Vlf_Znn'), (5,'Vhf_Znn'), (7,'ttbar_Znn')
@@ -283,21 +286,21 @@ if args.rebinning_scheme == 'zll-fix': # all channels: 1bin in TT/LF, 2bins in H
   #Luca print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
   #Luca cb.cp().channel(['Zee','Zmm']).bin_id([7,8]).VariableRebin(binning)
 
-  binning=np.linspace(0.0,1.0,num=2)
-  print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
-  cb.cp().channel(['Zee','Zmm']).bin_id([8]).VariableRebin(binning)
+#  binning=np.linspace(0.0,1.0,num=2)
+#  print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
+#  cb.cp().channel(['Zee','Zmm']).bin_id([8]).VariableRebin(binning)
   
-  binning=np.linspace(0.0,1.0,num=2)
-  print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
-  cb.cp().channel(['Zee','Zmm']).bin_id([7]).VariableRebin(binning)
+#  binning=np.linspace(0.0,1.0,num=2)
+#  print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
+#  cb.cp().channel(['Zee','Zmm']).bin_id([7]).VariableRebin(binning)
   
-  binning=np.linspace(0.0,1.0,num=4)
+  binning=np.linspace(0.0,0.9,num=3)
   print 'binning in HF-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
   cb.cp().channel(['Zee','Zmm']).bin_id([5,6]).VariableRebin(binning)
 
-  binning=np.linspace(0.05,0.4,num=2)
-  print 'binning in LF-CR fitting variable (Jet_CvsL):',binning,'for Zll channels'
-  cb.cp().channel(['Zee','Zmm']).bin_id([3,4]).VariableRebin(binning)
+#  binning=np.linspace(0.0,0.9,num=3)
+#  print 'binning in LF-CR fitting variable (Jet_CvsL):',binning,'for Zll channels'
+#  cb.cp().channel(['Zee','Zmm']).bin_id([3,4]).VariableRebin(binning)
 
 if args.rebinning_scheme == 'znn-rebin': # all channels: 1bin in TT/LF, 2bins in HF
 
@@ -366,7 +369,7 @@ if args.auto_rebin:
 ch.SetStandardBinNames(cb)
 
 writer=ch.CardWriter("output/" + args.output_folder + year + "/$TAG/$BIN"+year+".txt",
-                      "output/" + args.output_folder + year +"/$TAG/vhbb_input_$BIN"+year+".root")
+                      "output/" + args.output_folder + year +"/$TAG/vhcc_input_$BIN"+year+".root")
 writer.SetWildcardMasses([])
 writer.SetVerbosity(0);
                 

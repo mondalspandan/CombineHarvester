@@ -122,7 +122,7 @@ def AddSystematics2016(cb):
   # TT Zll
   cb.cp().channel(['Zee','Zmm']).process(['TT']).AddSyst(cb,
      'SF_TT_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')
-     ([1,3,5,7,9],0.9))
+     ([1,3,5,7,9],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['TT']).AddSyst(cb,
      'SF_TT_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')
@@ -219,14 +219,14 @@ def AddSystematics2016(cb):
 
   #Set a sensible range for the rate params
   for syst in cb.cp().syst_type(["rateParam"]).syst_name_set():
-    cb.GetParameter(syst).set_range(0.0,5.0)
+    cb.GetParameter(syst).set_range(0.,5.)
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #%%%%%%%%%%%%%%%%% EXPERIMENTAL UNCERTAINTIES
 
   cb.cp().AddSyst( cb,'lumi_13TeV_2016','lnN', ch.SystMap()(1.025))
 
-  cb.cp().AddSyst( cb,'tagger_13TeV_2016','lnN', ch.SystMap()(2.0))
+#  cb.cp().AddSyst( cb,'tagger_13TeV_2016','lnN', ch.SystMap()(2.0))
   
 #  cb.cp().channel(['Wen','Wmn']).process(['TT']).AddSyst(cb,'CMS_vhbb_ptwweights_tt','shape',ch.SystMap()(1.0))
 

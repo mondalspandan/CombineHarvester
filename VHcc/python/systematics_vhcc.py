@@ -226,7 +226,7 @@ def AddSystematics2016(cb):
 
   cb.cp().AddSyst( cb,'lumi_13TeV_2016','lnN', ch.SystMap()(1.025))
 
-  cb.cp().AddSyst( cb,'tagger_13TeV_2016','lnN', ch.SystMap()(2.0))
+#  cb.cp().AddSyst( cb,'tagger_13TeV_2016','lnN', ch.SystMap()(3.0))
   
 #  cb.cp().channel(['Wen','Wmn']).process(['TT']).AddSyst(cb,'CMS_vhbb_ptwweights_tt','shape',ch.SystMap()(1.0))
 

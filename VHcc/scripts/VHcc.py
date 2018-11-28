@@ -102,6 +102,8 @@ parser.add_argument(
  '--doVV', default=False, help="""if True assume we are running the VZ(cc) analysis""")
 parser.add_argument(
  '--mjj',  default=True, help="""if True assume we are running the mjj analysis""")
+parser.add_argument(
+ '--sr_only',  default=False, help="""if True assume we are running only the signal region""")
 
 args = parser.parse_args()
 
@@ -211,28 +213,46 @@ if args.mjj:
 
     # don't fit QCD anywhere for Mjj!
     bkg_procs['Znn'].remove('QCD')
-
-    cats = {
-      'Zee' : [
-        (1, 'SR_high_Zee'), (2, 'SR_low_Zee'), (3, 'Zlf_high_Zee'), (4,'Zlf_low_Zee'),
-        (5, 'Zhf_high_Zee'), (6, 'Zhf_low_Zee'), (7,'ttbar_high_Zee'), (8,'ttbar_low_Zee')
-        ],
-      'Zmm' : [
-        (1, 'SR_high_Zmm'), (2, 'SR_low_Zmm'), (3, 'Zlf_high_Zmm'), (4,'Zlf_low_Zmm'),
-        (5, 'Zhf_high_Zmm'), (6, 'Zhf_low_Zmm'), (7,'ttbar_high_Zmm'), (8,'ttbar_low_Zmm')
-        ],
-      'Wen' : [
-        (1, 'SR_Wenu'), (3,'Wlf_Wenu'), (5,'Whf_Wenu'), (7,'ttbar_Wenu')
-        ],
-      'Wmn' : [
-        (1, 'SR_Wmunu'), (3,'Wlf_Wmunu'), (5,'Whf_Wmunu'), (7,'ttbar_Wmunu')
-        ],
-      'Znn' : [
-        (1, 'SR_Znn'), (3,'Vlf_Znn'), (5,'Vhf_Znn'), (7,'ttbar_Znn')
-        ]
-      }
     
-
+    if not args.sr_only:
+      cats = {
+        'Zee' : [
+          (1, 'SR_high_Zee'), (2, 'SR_low_Zee'), (3, 'Zlf_high_Zee'), (4,'Zlf_low_Zee'),
+          (5, 'Zhf_high_Zee'), (6, 'Zhf_low_Zee'), (7,'ttbar_high_Zee'), (8,'ttbar_low_Zee')
+          ],
+        'Zmm' : [
+          (1, 'SR_high_Zmm'), (2, 'SR_low_Zmm'), (3, 'Zlf_high_Zmm'), (4,'Zlf_low_Zmm'),
+          (5, 'Zhf_high_Zmm'), (6, 'Zhf_low_Zmm'), (7,'ttbar_high_Zmm'), (8,'ttbar_low_Zmm')
+          ],
+        'Wen' : [
+          (1, 'SR_Wenu'), (3,'Wlf_Wenu'), (5,'Whf_Wenu'), (7,'ttbar_Wenu')
+          ],
+        'Wmn' : [
+          (1, 'SR_Wmunu'), (3,'Wlf_Wmunu'), (5,'Whf_Wmunu'), (7,'ttbar_Wmunu')
+          ],
+        'Znn' : [
+          (1, 'SR_Znn'), (3,'Vlf_Znn'), (5,'Vhf_Znn'), (7,'ttbar_Znn')
+          ]
+        }
+    else:
+      cats = {
+        'Zee' : [
+          (1, 'SR_high_Zee'), (2, 'SR_low_Zee')
+          ],
+        'Zmm' : [
+          (1, 'SR_high_Zmm'), (2, 'SR_low_Zmm')
+          ],
+        'Wen' : [
+          (1, 'SR_Wenu')
+          ],
+        'Wmn' : [
+          (1, 'SR_Wmunu')
+           ],
+        'Znn' : [
+          (1, 'SR_Znn')
+          ]
+        }
+      
 for chn in chns:
   cb.AddObservations( ['*'], ['vhcc'], ['13TeV'], [chn], cats[chn])
   cb.AddProcesses( ['*'], ['vhcc'], ['13TeV'], [chn], bkg_procs[chn], cats[chn], False)
@@ -264,6 +284,12 @@ for chn in chns:
       file, 'BDT_$BIN_$PROCESS', 'BDT_$BIN_$PROCESS_$SYSTEMATIC')
 
 # play with rebinning (and/or cutting) of the shapes
+if args.doVV:
+  binning=np.linspace(75.0,105.0,num=6)
+  print 'binning centred around Z-mass in SR (Mjj):',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,2]).VariableRebin(binning)
+
+
 if args.rebinning_scheme == 'zll-rebin':
   binning=np.linspace(0.0,1.0,num=16)
   print 'binning in TT-CR,HF-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
@@ -366,7 +392,7 @@ if args.auto_rebin:
 ch.SetStandardBinNames(cb)
 
 writer=ch.CardWriter("output/" + args.output_folder + year + "/$TAG/$BIN"+year+".txt",
-                      "output/" + args.output_folder + year +"/$TAG/vhbb_input_$BIN"+year+".root")
+                      "output/" + args.output_folder + year +"/$TAG/vhcc_input_$BIN"+year+".root")
 writer.SetWildcardMasses([])
 writer.SetVerbosity(0);
                 
