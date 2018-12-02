@@ -277,10 +277,10 @@ if args.rebinning_scheme == 'zll-rebin':
   cb.cp().channel(['Zee','Zmm']).bin_id([3,4]).VariableRebin(binning)
 
    
-if args.rebinning_scheme == 'zll-fix': # all channels: 1bin in TT/LF, 2bins in HF
-  #binning=np.linspace(50.0,200.0,num=6)
-  #print 'binning in SR fitting variable (mjj):',binning,'for Zll channels'
-  #cb.cp().channel(['Zee','Zmm']).bin_id([1,2]).VariableRebin(binning)
+if args.rebinning_scheme == 'zll-VV': # all channels: 1bin in TT/LF, 2bins in HF
+  binning=np.linspace(50.0,125.0,num=6)
+  print 'binning in SR fitting variable (mjj):',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,2]).VariableRebin(binning)
 
   #Luca binning=np.linspace(0.0,1.0,num=5)
   #Luca print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
@@ -294,9 +294,9 @@ if args.rebinning_scheme == 'zll-fix': # all channels: 1bin in TT/LF, 2bins in H
 #  print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
 #  cb.cp().channel(['Zee','Zmm']).bin_id([7]).VariableRebin(binning)
   
-  binning=np.linspace(0.0,0.9,num=3)
-  print 'binning in HF-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
-  cb.cp().channel(['Zee','Zmm']).bin_id([5,6]).VariableRebin(binning)
+#  binning=np.linspace(0.0,0.9,num=3)
+#  print 'binning in HF-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
+#  cb.cp().channel(['Zee','Zmm']).bin_id([5,6]).VariableRebin(binning)
 
 #  binning=np.linspace(0.0,0.9,num=3)
 #  print 'binning in LF-CR fitting variable (Jet_CvsL):',binning,'for Zll channels'
