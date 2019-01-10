@@ -41,8 +41,11 @@ def AddCommonSystematics(cb):
                   ) 
 
   # Measured cross section uncertainties because we don't have SF
-  cb.cp().process(['VV','VVbb','VVcc','VVLF']).AddSyst(cb,
+  cb.cp().process(['VV','VVbb','VVLF']).AddSyst(cb,
       'CMS_vhbb_VV', 'lnN', ch.SystMap()(1.15)) 
+
+  cb.cp().process(['VVcc']).AddSyst(cb,
+      'CMS_vhbb_VVcc', 'lnN', ch.SystMap()(1.15)) 
 
   cb.cp().process(['s_Top']).AddSyst(cb,
       'CMS_vhbb_ST', 'lnN', ch.SystMap()(1.15)) 
@@ -168,53 +171,53 @@ def AddSystematics2016(cb):
   # TT Znn
   cb.cp().channel(['Znn']).process(['TT']).AddSyst(cb,
      'SF_TT_Znn_2016', 'rateParam', ch.SystMap('bin_id')
-     (range(1,8),1.0))
+     (range(1,10),1.0))
 
   # Zj_ll Znn
   cb.cp().channel(['Znn']).process(['Zj_ll']).AddSyst(cb,
      'SF_Zj_ll_Znn_2016', 'rateParam', ch.SystMap('bin_id')
-     (range(1,8),1.0))
+     (range(1,10),1.0))
 
   # Zj_blc Znn
   cb.cp().channel(['Znn']).process(['Zj_blc']).AddSyst(cb,
      'SF_Zj_blc_Znn_2016', 'rateParam', ch.SystMap('bin_id')
-     (range(1,8),1.0))
+     (range(1,10),1.0))
 
   # Zj_bbc Znn
   cb.cp().channel(['Znn']).process(['Zj_bbc']).AddSyst(cb,
      'SF_Zj_bbc_Znn_2016', 'rateParam', ch.SystMap('bin_id')
-     (range(1,8),1.0))
+     (range(1,10),1.0))
 
   # Zj_cc Znn
   cb.cp().channel(['Znn']).process(['Zj_cc']).AddSyst(cb,
      'SF_Zj_cc_Znn_2016', 'rateParam', ch.SystMap('bin_id')
-     (range(1,8),1.0))
+     (range(1,10),1.0))
 
 
   # TT Wln
   cb.cp().channel(['Wen','Wmn']).process(['TT']).AddSyst(cb,
      'SF_TT_Wln_2016', 'rateParam', ch.SystMap('bin_id')
-     (range(1,8),1.0))
+     (range(1,10),1.0))
 
   # Wj_ll Wln
   cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_ll']).AddSyst(cb,
      'SF_Wj_ll_Wln_2016', 'rateParam', ch.SystMap('bin_id')
-     (range(1,8),1.0))
+     (range(1,10),1.0))
 
   # Wj_blc Wln
   cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_blc']).AddSyst(cb,
      'SF_Wj_blc_Wln_2016', 'rateParam', ch.SystMap('bin_id')
-     (range(1,8),1.0))
+     (range(1,10),1.0))
 
   # Wj_bbc Wln
   cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_bbc']).AddSyst(cb,
      'SF_Wj_bbc_Wln_2016', 'rateParam', ch.SystMap('bin_id')
-     (range(1,8),1.0))
+     (range(1,10),1.0))
 
   # Wj_cc Wln
   cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_cc']).AddSyst(cb,
      'SF_Wj_cc_Wln_2016', 'rateParam', ch.SystMap('bin_id')
-     (range(1,8),1.0))
+     (range(1,10),1.0))
 
 
   #Set a sensible range for the rate params

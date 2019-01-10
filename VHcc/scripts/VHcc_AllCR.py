@@ -68,6 +68,14 @@ def increase_bin_errors(proc):
     new_hist.SetBinError(i,np.sqrt(2)*new_hist.GetBinError(i))
   proc.set_shape(new_hist,False)
 
+def decrease_bin_errors(proc):
+  print 'decreasing bin errors for process ', proc.process(), ' in region ', proc.bin()
+  new_hist = proc.ShapeAsTH1F();
+  new_hist.Scale(proc.rate())
+  for i in range(1,new_hist.GetNbinsX()+1):
+    new_hist.SetBinError(i,new_hist.GetBinError(i)/np.sqrt(2.0))
+  proc.set_shape(new_hist,False)
+
   
 
 parser = argparse.ArgumentParser()
@@ -225,13 +233,13 @@ if args.mjj:
         #(5,'Zcc_high_Zmm'), (6,'Zcc_low_Zmm'),(7,'ttbar_high_Zmm'), (8,'ttbar_low_Zmm'),
         ],
       'Wen' : [
-        (1, 'SR_Wenu'), (3,'Wlf_Wenu'), (5,'Whf_Wenu'), (7,'ttbar_Wenu'), (9,'Zcc_Wenu')
+        (1, 'SR_Wenu'), (3,'Wlf_Wenu'), (5,'Whf_Wenu'), (7,'ttbar_Wenu'), (9,'Wcc_Wenu')
         ],
       'Wmn' : [
-        (1, 'SR_Wmunu'), (3,'Wlf_Wmunu'), (5,'Whf_Wmunu'), (7,'ttbar_Wmunu'), (9,'Zcc_Wmunu')
+        (1, 'SR_Wmunu'), (3,'Wlf_Wmunu'), (5,'Whf_Wmunu'), (7,'ttbar_Wmunu'), (9,'Wcc_Wmunu')
         ],
       'Znn' : [
-        (1, 'SR_Znn'), (3,'Vlf_Znn'), (5,'Vhf_Znn'), (7,'ttbar_Znn')
+        (1, 'SR_Znn'), (3,'Vlf_Znn'), (5,'Vhf_Znn'), (7,'ttbar_Znn'), (9,'Vcc_Znn')
         ]
       }
     
@@ -268,39 +276,49 @@ for chn in chns:
 
 # play with rebinning (and/or cutting) of the shapes
 if args.rebinning_scheme == 'zll-rebin':
-  binning=np.linspace(0.0,1.0,num=16)
-  print 'binning in TT-CR,HF-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
-  cb.cp().channel(['Zee','Zmm']).bin_id([5,6,7,8]).VariableRebin(binning)
+  binning=np.linspace(0.0,0.9,num=8)
+  print 'binning in ZCC-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([9,10]).VariableRebin(binning)
 
-  binning=np.linspace(0.05,1.0,num=16)
-  print 'binning in LF-CR fitting variable (Jet_CvsL):',binning,'for Zll channels'
-  cb.cp().channel(['Zee','Zmm']).bin_id([3,4]).VariableRebin(binning)
-
-   
-if args.rebinning_scheme == 'zll-VV': # all channels: 1bin in TT/LF, 2bins in HF
-  binning=np.linspace(50.0,125.0,num=6)
-  print 'binning in SR fitting variable (mjj):',binning,'for Zll channels'
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,2]).VariableRebin(binning)
-
-  #Luca binning=np.linspace(0.0,1.0,num=5)
-  #Luca print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
-  #Luca cb.cp().channel(['Zee','Zmm']).bin_id([7,8]).VariableRebin(binning)
-
-#  binning=np.linspace(0.0,1.0,num=2)
-#  print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
-#  cb.cp().channel(['Zee','Zmm']).bin_id([8]).VariableRebin(binning)
-  
-#  binning=np.linspace(0.0,1.0,num=2)
-#  print 'binning in TT-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
-#  cb.cp().channel(['Zee','Zmm']).bin_id([7]).VariableRebin(binning)
-  
-#  binning=np.linspace(0.0,0.9,num=3)
-#  print 'binning in HF-CR fitting variable (Jet_CvsB):',binning,'for Zll channels'
-#  cb.cp().channel(['Zee','Zmm']).bin_id([5,6]).VariableRebin(binning)
-
-#  binning=np.linspace(0.0,0.9,num=3)
+#  binning=np.linspace(0.05,1.0,num=16)
 #  print 'binning in LF-CR fitting variable (Jet_CvsL):',binning,'for Zll channels'
 #  cb.cp().channel(['Zee','Zmm']).bin_id([3,4]).VariableRebin(binning)
+#
+#  binning=np.linspace(0.05,1.0,num=16)
+#  print 'binning in LF-CR fitting variable (Jet_CvsL):',binning,'for Zll channels'
+#  cb.cp().channel(['Zee','Zmm']).bin_id([3,4]).VariableRebin(binning)
+
+
+if args.rebinning_scheme == 'VV': # SR rebinning for Z-analysis
+  binning=np.linspace(60.0,120.0,num=7)
+  print 'binning in SR fitting variable (mjj):',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,2]).VariableRebin(binning)
+  binning=np.linspace(60.0,120.0,num=7)
+  print 'binning in SR fitting variable (mjj):',binning,'for Wln channels'
+  cb.cp().channel(['Wen','Wmn']).bin_id([1]).VariableRebin(binning)
+  binning=np.linspace(60.0,120.0,num=7)
+  print 'binning in SR fitting variable (mjj):',binning,'for Znn channels'
+  cb.cp().channel(['Znn']).bin_id([1]).VariableRebin(binning)
+
+   
+if args.rebinning_scheme == 'zll-VV': # SR rebinning for Z-analysis
+#  binning=np.linspace(60.0,120.0,num=7)
+#  print 'binning in SR fitting variable (mjj):',binning,'for Zll channels'
+#  cb.cp().channel(['Zee','Zmm']).bin_id([1,2]).VariableRebin(binning)
+  binning=np.linspace(0.0,0.9,num=8)
+  print 'binning in CRs:',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([5,6,7,8,9,10]).VariableRebin(binning)
+
+if args.rebinning_scheme == 'wln-VV': # SR rebinning for Z-analysis
+  binning=np.linspace(60.0,120.0,num=7)
+  print 'binning in SR fitting variable (mjj):',binning,'for Wln channels'
+  cb.cp().channel(['Wen','Wmn']).bin_id([1]).VariableRebin(binning)
+
+if args.rebinning_scheme == 'Znn-VV': # SR rebinning for Z-analysis
+  binning=np.linspace(60.0,120.0,num=7)
+  print 'binning in SR fitting variable (mjj):',binning,'for Znn channels'
+  cb.cp().channel(['Znn']).bin_id([1]).VariableRebin(binning)
+
 
 if args.rebinning_scheme == 'znn-rebin': # all channels: 1bin in TT/LF, 2bins in HF
 
@@ -311,7 +329,19 @@ if args.rebinning_scheme == 'znn-rebin': # all channels: 1bin in TT/LF, 2bins in
   binning=np.linspace(0.0,1.0,num=6)
   print 'binning in CR for HF fitting variable:',binning,'for Znn channels'
   cb.cp().channel(['Znn']).bin_id([5]).VariableRebin(binning) 
-   
+
+if args.rebinning_scheme == 'LF-rebin': # all channels: 1bin in TT/LF, 2bins in HF
+  binning=np.linspace(0.0,0.4,num=2) 
+  print 'binning in CR for LF fitting variable:',binning,'for ZLL channelrs'
+  cb.cp().channel(['Zee','Zmm']).bin_id([3]).VariableRebin(binning)
+  binning=np.linspace(0.0,0.4,num=2) 
+  print 'binning in CR for LF fitting variable:',binning,'for Wln channelrs'
+  cb.cp().channel(['Wen','Wmn']).bin_id([3]).VariableRebin(binning)
+  binning=np.linspace(0.0,0.4,num=2) 
+  print 'binning in CR for LF fitting variable:',binning,'for Znn channelrs'
+  cb.cp().channel(['Znn']).bin_id([3]).VariableRebin(binning)
+
+  
 
 cb.FilterProcs(lambda x: drop_zero_procs(cb,x))
 cb.FilterSysts(lambda x: drop_zero_systs(x))
@@ -319,7 +349,12 @@ cb.FilterSysts(lambda x: drop_zero_systs(x))
 cb.FilterProcs(lambda x: drop_znnqcd(cb,x))
 
 if args.doVV:
-    cb.FilterSysts(lambda x: x.name() in "CMS_vhbb_VV")
+#Luca    cb.FilterSysts(lambda x: x.name() in "CMS_vhbb_VV")
+    cb.FilterSysts(lambda x: x.name() in "CMS_vhbb_VVcc")
+    
+### decrease bin statistical errors
+cb.cp().channel(['Zee','Zmm']).process(['Zj_cc','Zj_bbc','Zj_blc','Zj_ll']).ForEachProc(lambda x: decrease_bin_errors(x))
+
 
 cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_ll']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Wj_ll_vhbb_vjetnlodetajjrw_13TeV')
 cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_blc']).RenameSystematic(cb,'CMS_vhbb_vjetnlodetajjrw_13TeV','CMS_Wj_blc_vhbb_vjetnlodetajjrw_13TeV')
@@ -333,14 +368,19 @@ cb.cp().channel(['Zee','Zmm','Znn']).process(['Zj_cc']).RenameSystematic(cb,'CMS
 #Luca cb.cp().channel(['Wen','Wmn','Znn']).RenameSystematic(cb,'CMS_res_j_reg_13TeV','CMS_NoKinFit_res_j_reg_13TeV')
 #Luca cb.cp().channel(['Zee','Zmm']).RenameSystematic(cb,'CMS_res_j_reg_13TeV','CMS_KinFit_res_j_reg_13TeV')
 
+if args.doVV:
+  cb.SetGroup('signal_theory',['CMS_LHE_weights_pdf_VVcc','.*LHE_weights.*VVcc'])
+  cb.SetGroup('bkg_theory',['pdf_Higgs.*','pdf_qqbar','pdf_gg','CMS_LHE_weights_pdf_VVLF','CMS_LHE_weights_pdf_VVbb','CMS_vhbb_ST','.*LHE_weights.*ZHbb*','.*LHE_weights.*WHbb*','.*LHE_weights.*ggZHbb*','.*LHE_weights.*TT.*','.*LHE_weights.*VVLF','.*LHE_weights.*VVbb','.*LHE_weights.*Zj_ll.*','LHE_weights.*Zj_blc.*','LHE_weights.*Zj_bbc.*','LHE_weights.*Zj_cc.*','LHE_weights.*Wj_ll.*','LHE_weights.*Wj_blc.*','LHE_weights.*Wj_bbc.*','LHE_weights.*Wj_cc.*','LHE_weights.*s_Top.*','LHE_weights.*QCD.*','.*LHE_weights.*ZHcc*','.*LHE_weights.*WHcc*','.*LHE_weights.*ggZHcc*','BR_hcc','QCDscale_ggZH','QCDscale_VH',])
 
-cb.SetGroup('signal_theory',['pdf_Higgs.*','BR_hbb','QCDscale_ggZH','QCDscale_VH','CMS_vhbb_boost.*','.*LHE_weights.*ZHcc*','.*LHE_weights.*WHcc*','.*LHE_weights.*ggZHcc*'])
-cb.SetGroup('bkg_theory',['pdf_qqbar','pdf_gg','CMS_vhbb_VV','CMS_vhbb_ST','.*LHE_weights.*ZHbb*','.*LHE_weights.*WHbb*','.*LHE_weights.*ggZHbb*','.*LHE_weights.*TT.*','.*LHE_weights.*VV.*','.*LHE_weights.*Zj_ll.*','LHE_weights.*Zj_blc.*','LHE_weights.*Zj_bbc.*','LHE_weights.*Zj_cc.*','LHE_weights.*Wj_ll.*','LHE_weights.*Wj_blc.*','LHE_weights.*Wj_bbc.*','LHE_weights.*Wj_cc.*','LHE_weights.*s_Top.*','LHE_weights.*QCD.*'])
+else:
+  cb.SetGroup('signal_theory',['pdf_Higgs.*','BR_hcc','QCDscale_ggZH','QCDscale_VH','.*LHE_weights.*ZHcc*','.*LHE_weights.*WHcc*','.*LHE_weights.*ggZHcc*'])
+  cb.SetGroup('bkg_theory',['pdf_qqbar','pdf_gg','CMS_LHE_weights_pdf_VV*','CMS_vhbb_ST','.*LHE_weights.*ZHbb*','.*LHE_weights.*WHbb*','.*LHE_weights.*ggZHbb*','.*LHE_weights.*TT.*','.*LHE_weights.*VV*','.*LHE_weights.*Zj_ll.*','LHE_weights.*Zj_blc.*','LHE_weights.*Zj_bbc.*','LHE_weights.*Zj_cc.*','LHE_weights.*Wj_ll.*','LHE_weights.*Wj_blc.*','LHE_weights.*Wj_bbc.*','LHE_weights.*Wj_cc.*','LHE_weights.*s_Top.*','LHE_weights.*QCD.*'])
+  
 cb.SetGroup('sim_modelling',['CMS_vhbb_ptwweights.*','CMS_vhbb_vjetnlodetajjrw.*'])
-cb.SetGroup('jes',['CMS_scale_j.*'])
-cb.SetGroup('jer',['CMS_res_j.*','CMS_signal_resolution.*'])
-cb.SetGroup('btag',['.*bTagWeight.*JES.*','.*bTagWeight.*HFStats.*','.*bTagWeight.*LF_.*','.*bTagWeight.*cErr.*'])
-cb.SetGroup('mistag',['.*bTagWeight.*LFStats.*','.*bTagWeight.*HF_.*'])
+cb.SetGroup('jes',['CMS_scale_j_13TeV_2016'])
+cb.SetGroup('jer',['CMS_res_j_13TeV_2016'])
+cb.SetGroup('ctag',['CMS_cTagWeight.*'])
+#Luca cb.SetGroup('mistag',['.*bTagWeight.*LFStats.*','.*bTagWeight.*HF_.*'])
 cb.SetGroup('lumi',['lumi_13TeV','.*puWeight.*'])
 cb.SetGroup('lep_eff',['.*eff_e.*','.*eff_m.*'])
 cb.SetGroup('met',['.*MET.*'])
@@ -386,7 +426,7 @@ if 'Znn' in chns:
   #writer.WriteCards("Znn",cb.cp().FilterAll(lambda x: not (x.channel()=='Znn' or ( (x.channel() in ['Wmn','Wen']) and x.bin_id() in [3,4,5,6,7,8]))))
   if args.mjj:
     writer.WriteCards("Znn",cb.cp().channel(['Znn']))
-    writer.WriteCards("Znn",cb.cp().bin_id([3,7]).channel(['Wmn','Wen']))
+    writer.WriteCards("Znn",cb.cp().bin_id([3,5,7,9]).channel(['Wmn','Wen']))
       #Luca writer.WriteCards("Znn_CRonly",cb.cp().bin_id([3,4,5,6,7,8]).channel(['Znn','Wmn','Wen']))
   else:
     writer.WriteCards("Znn",cb.cp().channel(['Znn']))
