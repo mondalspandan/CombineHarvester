@@ -49,7 +49,6 @@ def AddCommonSystematics(cb):
                   ) 
 
   # Measured cross section uncertainties because we don't have SF
-#Luca   cb.cp().process(['VV','VVbb','VVLF']).AddSyst(cb,
   cb.cp().process(['VVbb','VVLF']).AddSyst(cb,
       'CMS_vhcc_VV', 'lnN', ch.SystMap()(1.15)) 
 
@@ -60,10 +59,8 @@ def AddCommonSystematics(cb):
       'CMS_vhcc_ST', 'lnN', ch.SystMap()(1.15)) 
 
   #Theory uncertainties: pdf acceptance, to be re-evaluated
-  cb.cp().process(['ZH_hbb']).AddSyst(cb,'CMS_LHE_weights_pdf_ZHbb', 'lnN', ch.SystMap()(1.01)) 
-  cb.cp().process(['WH_hbb']).AddSyst(cb,'CMS_LHE_weights_pdf_WHbb', 'lnN', ch.SystMap()(1.01))
-  cb.cp().process(['ZH_hcc']).AddSyst(cb,'CMS_LHE_weights_pdf_ZHcc', 'lnN', ch.SystMap()(1.01)) 
-  cb.cp().process(['WH_hcc']).AddSyst(cb,'CMS_LHE_weights_pdf_WHcc', 'lnN', ch.SystMap()(1.01))
+  cb.cp().process(['ZH_hbb','ZH_hcc']).AddSyst(cb,'CMS_LHE_weights_pdf_ZH', 'lnN', ch.SystMap()(1.01)) 
+  cb.cp().process(['WH_hbb','ZH_hcc']).AddSyst(cb,'CMS_LHE_weights_pdf_WH', 'lnN', ch.SystMap()(1.01))
   cb.cp().process(['TT']).AddSyst(cb,    'CMS_LHE_weights_pdf_TT', 'lnN', ch.SystMap()(1.005))
   cb.cp().process(['Zj_ll']).AddSyst(cb,'CMS_LHE_weights_pdf_Zj_ll', 'lnN', ch.SystMap()(1.05))
   cb.cp().process(['Zj_blc']).AddSyst(cb,'CMS_LHE_weights_pdf_Zj_blc', 'lnN', ch.SystMap()(1.03))
@@ -73,20 +70,27 @@ def AddCommonSystematics(cb):
   cb.cp().process(['Wj_blc']).AddSyst(cb,'CMS_LHE_weights_pdf_Wj_blc', 'lnN', ch.SystMap()(1.03))
   cb.cp().process(['Wj_bbc']).AddSyst(cb,'CMS_LHE_weights_pdf_Wj_bbc', 'lnN', ch.SystMap()(1.02))
   cb.cp().process(['Wj_cc']).AddSyst(cb,'CMS_LHE_weights_pdf_Wj_cc', 'lnN', ch.SystMap()(1.02))
-  
   cb.cp().process(['VVcc']).AddSyst(cb,'CMS_LHE_weights_pdf_VVcc', 'lnN', ch.SystMap()(1.02))
   cb.cp().process(['VVbb']).AddSyst(cb,'CMS_LHE_weights_pdf_VVbb', 'lnN', ch.SystMap()(1.02))
   cb.cp().process(['VVLF']).AddSyst(cb,'CMS_LHE_weights_pdf_VVLF', 'lnN', ch.SystMap('channel') 
                                                                         (['Zee','Zmm','Znn'],1.03)
                                                                         (['Wen','Wmn'],1.02)) 
   
+  cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVLF']).AddSyst(cb,
+      'CMS_LHE_weights_scale_muR_VVLF','shape',ch.SystMap()(1.0))
+  cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVbb']).AddSyst(cb,
+      'CMS_LHE_weights_scale_muR_VVbb','shape',ch.SystMap()(1.0))
   cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVcc']).AddSyst(cb,
       'CMS_LHE_weights_scale_muR_VVcc','shape',ch.SystMap()(1.0))
 
+  cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVLF']).AddSyst(cb,
+      'CMS_LHE_weights_scale_muF_VVLF','shape',ch.SystMap()(1.0))
   cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVbb']).AddSyst(cb,
-      'CMS_LHE_weights_scale_muR_VVbb','shape',ch.SystMap()(1.0))
+      'CMS_LHE_weights_scale_muF_VVbb','shape',ch.SystMap()(1.0))
+  cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVcc']).AddSyst(cb,
+      'CMS_LHE_weights_scale_muF_VVcc','shape',ch.SystMap()(1.0))
 
-  
+
 ###########################################
 ### Uncertainties for 2016
 ###########################################
@@ -94,20 +98,12 @@ def AddSystematics2016(cb):
 
   cb.cp().AddSyst(cb,'CMS_vhcc_puWeight_2016','shape',ch.SystMap()(1.0))
                             
-  cb.cp().process(['ZH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muR_ZHcc','shape',ch.SystMap()(1.0))
-  cb.cp().process(['WH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muR_WHcc','shape',ch.SystMap()(1.0))
-  cb.cp().process(['ggZH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muR_ggZHcc','shape',ch.SystMap()(1.0))
-  
-  cb.cp().process(['ZH_hbb']).AddSyst(cb,'CMS_LHE_weights_scale_muR_ZHbb','shape',ch.SystMap()(1.0))
-  cb.cp().process(['WH_hbb']).AddSyst(cb,'CMS_LHE_weights_scale_muR_WHbb','shape',ch.SystMap()(1.0))
-  cb.cp().process(['ggZH_hbb']).AddSyst(cb,'CMS_LHE_weights_scale_muR_ggZHbb','shape',ch.SystMap()(1.0))
-
-  cb.cp().process(['ZH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muF_ZHcc','shape',ch.SystMap()(1.0))
-  cb.cp().process(['WH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muF_WHcc','shape',ch.SystMap()(1.0))
-  cb.cp().process(['ggZH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muF_ggZHcc','shape',ch.SystMap()(1.0))
-  cb.cp().process(['ZH_hbb']).AddSyst(cb,'CMS_LHE_weights_scale_muF_ZHbb','shape',ch.SystMap()(1.0))
-  cb.cp().process(['WH_hbb']).AddSyst(cb,'CMS_LHE_weights_scale_muF_WHbb','shape',ch.SystMap()(1.0))
-  cb.cp().process(['ggZH_hbb']).AddSyst(cb,'CMS_LHE_weights_scale_muF_ggZHbb','shape',ch.SystMap()(1.0))
+  cb.cp().process(['ZH_hbb','ZH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muR_ZH','shape',ch.SystMap()(1.0))
+  cb.cp().process(['WH_hbb','WH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muR_WH','shape',ch.SystMap()(1.0))
+  cb.cp().process(['ggZH_hbb','ggZH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muR_ggZH','shape',ch.SystMap()(1.0))
+  cb.cp().process(['ZH_hbb','ZH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muF_ZH','shape',ch.SystMap()(1.0))
+  cb.cp().process(['WH_hbb','WH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muF_WH','shape',ch.SystMap()(1.0))
+  cb.cp().process(['ggZH_hbb','ggZH_hcc']).AddSyst(cb,'CMS_LHE_weights_scale_muF_ggZH','shape',ch.SystMap()(1.0))
   cb.cp().process(['Zj_ll']).AddSyst(cb,'CMS_LHE_weights_scale_muR_Zj_ll','shape',ch.SystMap()(1.0))
   cb.cp().process(['Zj_ll']).AddSyst(cb,'CMS_LHE_weights_scale_muF_Zj_ll','shape',ch.SystMap()(1.0))
   cb.cp().process(['Zj_blc']).AddSyst(cb,'CMS_LHE_weights_scale_muR_Zj_blc','shape',ch.SystMap()(1.0))
