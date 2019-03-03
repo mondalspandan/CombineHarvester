@@ -87,6 +87,8 @@ parser.add_argument(
 parser.add_argument(
  '--auto_rebin', action='store_true', help="""Rebin automatically?""")
 parser.add_argument(
+ '--splitJEC', action='store_true', default=False, help="""Split JEC systematics into sources""")
+parser.add_argument(
  '--bbb_mode', default=1, type=int, help="""Sets the type of bbb uncertainty setup. 0: no bin-by-bins, 1: autoMCStats""")
 parser.add_argument(
  '--zero_out_low', action='store_true', help="""Zero-out lowest SR bins (purely for the purpose of making yield tables""")
@@ -254,9 +256,9 @@ cb.FilterProcs(lambda x: x.bin_id()==1 and x.channel()=='Znn' and x.process()=='
   
 systs.AddCommonSystematics(cb)
 if year=='2016':
-  systs.AddSystematics2016(cb)
+  systs.AddSystematics2016(cb, args.splitJEC)
 if year=='2017':
-  systs.AddSystematics2017(cb)
+  systs.AddSystematics2017(cb, args.splitJEC)
 
 
 if args.bbb_mode==0:
@@ -431,7 +433,7 @@ else:
   cb.SetGroup('bkg_theory',['pdf_qqbar','pdf_gg','CMS_LHE_weights_pdf_VV*','CMS_vhbb_ST','.*LHE_weights.*ZHbb*','.*LHE_weights.*WHbb*','.*LHE_weights.*ggZHbb*','.*LHE_weights.*TT.*','.*LHE_weights.*VV*','.*LHE_weights.*Zj_ll.*','LHE_weights.*Zj_blc.*','LHE_weights.*Zj_bbc.*','LHE_weights.*Zj_cc.*','LHE_weights.*Wj_ll.*','LHE_weights.*Wj_blc.*','LHE_weights.*Wj_bbc.*','LHE_weights.*Wj_cc.*','LHE_weights.*s_Top.*','LHE_weights.*QCD.*'])
   
 cb.SetGroup('sim_modelling',['CMS_vhbb_ptwweights.*','CMS_vhbb_vjetnlodetajjrw.*'])
-cb.SetGroup('jes',['CMS_scale_j_13TeV_2016'])
+cb.SetGroup('jes',['CMS_scale_j.*'])
 cb.SetGroup('jer',['CMS_res_j_13TeV_2016'])
 cb.SetGroup('ctag',['CMS_cTagWeight.*'])
 #Luca cb.SetGroup('mistag',['.*bTagWeight.*LFStats.*','.*bTagWeight.*HF_.*'])
