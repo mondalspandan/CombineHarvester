@@ -32,10 +32,10 @@ def AddCommonSystematics(cb):
    # Theory uncertainties: backgrounds -> to be checked!
   cb.cp().AddSyst(cb,
                   'pdf_qqbar', 'lnN', ch.SystMap('channel','process') 
-#                  (['Zee','Zmm'],['Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVLF','VVbb','VVcc','VV'], 1.01)
-                  (['Zee','Zmm'],['Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVLF','VVbb','VVcc'], 1.01) 
-                  (['Znn'],['VVLF','VVbb','VVcc'],1.01)
-                  (['Wen','Wmn'],['VVLF','VVbb','VVcc'],1.01)) 
+#                  (['Zee','Zmm'],['Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc','VV'], 1.01)
+                  (['Zee','Zmm'],['Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother''VVcc'], 1.01) 
+                  (['Znn'],['VVother','VVcc'],1.01)
+                  (['Wen','Wmn'],['VVother','VVcc'],1.01)) 
  
   cb.cp().AddSyst(cb,
                   'pdf_gg', 'lnN', ch.SystMap('channel','process')
@@ -49,7 +49,7 @@ def AddCommonSystematics(cb):
                   ) 
 
   # Measured cross section uncertainties because we don't have SF
-  cb.cp().process(['VVbb','VVLF']).AddSyst(cb,
+  cb.cp().process(['VVother']).AddSyst(cb,
       'CMS_vhcc_VV', 'lnN', ch.SystMap()(1.15)) 
 
   cb.cp().process(['VVcc']).AddSyst(cb,
@@ -71,22 +71,17 @@ def AddCommonSystematics(cb):
   cb.cp().process(['Wj_bbc']).AddSyst(cb,'CMS_LHE_weights_pdf_Wj_bbc', 'lnN', ch.SystMap()(1.02))
   cb.cp().process(['Wj_cc']).AddSyst(cb,'CMS_LHE_weights_pdf_Wj_cc', 'lnN', ch.SystMap()(1.02))
   cb.cp().process(['VVcc']).AddSyst(cb,'CMS_LHE_weights_pdf_VVcc', 'lnN', ch.SystMap()(1.02))
-  cb.cp().process(['VVbb']).AddSyst(cb,'CMS_LHE_weights_pdf_VVbb', 'lnN', ch.SystMap()(1.02))
-  cb.cp().process(['VVLF']).AddSyst(cb,'CMS_LHE_weights_pdf_VVLF', 'lnN', ch.SystMap('channel') 
+  cb.cp().process(['VVother']).AddSyst(cb,'CMS_LHE_weights_pdf_VVother', 'lnN', ch.SystMap('channel') 
                                                                         (['Zee','Zmm','Znn'],1.03)
                                                                         (['Wen','Wmn'],1.02)) 
   
-  cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVLF']).AddSyst(cb,
-      'CMS_LHE_weights_scale_muR_VVLF','shape',ch.SystMap()(1.0))
-  cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVbb']).AddSyst(cb,
-      'CMS_LHE_weights_scale_muR_VVbb','shape',ch.SystMap()(1.0))
+  cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVother']).AddSyst(cb,
+      'CMS_LHE_weights_scale_muR_VVother','shape',ch.SystMap()(1.0))
   cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVcc']).AddSyst(cb,
       'CMS_LHE_weights_scale_muR_VVcc','shape',ch.SystMap()(1.0))
 
-  cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVLF']).AddSyst(cb,
-      'CMS_LHE_weights_scale_muF_VVLF','shape',ch.SystMap()(1.0))
-  cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVbb']).AddSyst(cb,
-      'CMS_LHE_weights_scale_muF_VVbb','shape',ch.SystMap()(1.0))
+  cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVother']).AddSyst(cb,
+      'CMS_LHE_weights_scale_muF_VVother','shape',ch.SystMap()(1.0))
   cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVcc']).AddSyst(cb,
       'CMS_LHE_weights_scale_muF_VVcc','shape',ch.SystMap()(1.0))
 
@@ -369,7 +364,7 @@ def AddSystematics2017(cb, splitJEC=False):
   # EXCLUDE PROBLEMATIC NUISANCES for 2017 shapes
 #Luca  cb.FilterSysts(lambda x: 
 #Luca                        x.channel() in ['Wen','Wmn'] and 
-#Luca                        x.process() in ['s_Top','TT','Wj0b','Wj1b','Wj2b','Zj0b','Zj1b','Zj2b','VVHF','VVLF','WH_hbb','ZH_hbb'] and 
+#Luca                        x.process() in ['s_Top','TT','Wj0b','Wj1b','Wj2b','Zj0b','Zj1b','Zj2b','VVHF','VVother','WH_hbb','ZH_hbb'] and 
 #Luca                        #x.bin_id() in [1,3,5,6,7] and 
 #Luca                        x.bin_id() in [1,2,3,4,5,6,7] and 
 #Luca                        x.name() in 'CMS_scale_j_PileUpPtBB_13TeV'
