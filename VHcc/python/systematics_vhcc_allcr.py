@@ -271,7 +271,10 @@ def AddSystematics2016(cb, splitJEC=False):
 
 #=============  VpT reweightings
   cb.cp().process(['TT']).AddSyst(cb,'CMS_vhcc_topptreweighting_13TeV_2016','shape',ch.SystMap()(1.0))
-  cb.cp().channel(['Wen','Wmn']).process(['Wj_ll','Wj_blc','Wj_bbc','Wj_cc','s_Top']).AddSyst(cb,'CMS_vhcc_ptwweights_13TeV_2016','shape',ch.SystMap()(1.0))
+  cb.cp().channel(['Wen','Wmn']).process(['Wj_ll','Wj_blc','Wj_bbc','Wj_cc']).AddSyst(cb,'CMS_vhcc_ptwweights_13TeV_2016','shape',ch.SystMap()(1.0))
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['s_Top']).AddSyst(cb,'CMS_vhcc_ptwweights_13TeV_2016','shape',ch.SystMap()(1.0))
+  cb.cp().channel(['Zee','Zmm','Znn']).process(['Zj_ll','Zj_blc','Zj_bbc','Zj_cc','s_Top']).AddSyst(cb,'CMS_vhcc_ptzweights_13TeV_2016','shape',ch.SystMap()(1.0))
+  cb.cp().channel(['Zee','Zmm']).process(['s_Top']).AddSyst(cb,'CMS_vhcc_ptzweights_13TeV_2016','shape',ch.SystMap()(1.0))
   
   #Luca cb.cp().channel(['Wen','Wmn']).process(['Wj_ll']).AddSyst(cb,'CMS_vhcc_ptwweights_13TeV_2016','shape',ch.SystMap()(1.0))
 
@@ -328,13 +331,16 @@ def AddSystematics2016(cb, splitJEC=False):
 #============= tagger uncertainties
 # inclusive in pt/eta
   cb.cp().AddSyst(cb,'CMS_cTagWeight_PU','shape',ch.SystMap()(1.0))
-  cb.cp().AddSyst(cb,'CMS_cTagWeight_LepId','shape',ch.SystMap()(1.0))
+  cb.cp().AddSyst(cb,'CMS_cTagWeight_EleId','shape',ch.SystMap()(1.0))
+  cb.cp().AddSyst(cb,'CMS_cTagWeight_MuId','shape',ch.SystMap()(1.0))
   cb.cp().AddSyst(cb,'CMS_cTagWeight_JES','shape',ch.SystMap()(1.0))
   cb.cp().AddSyst(cb,'CMS_cTagWeight_JER','shape',ch.SystMap()(1.0))
   cb.cp().AddSyst(cb,'CMS_cTagWeight_muR','shape',ch.SystMap()(1.0))
   cb.cp().AddSyst(cb,'CMS_cTagWeight_muF','shape',ch.SystMap()(1.0))
   cb.cp().AddSyst(cb,'CMS_cTagWeight_MCStat','shape',ch.SystMap()(1.0))
   cb.cp().AddSyst(cb,'CMS_cTagWeight_DataStat','shape',ch.SystMap()(1.0))
+  cb.cp().AddSyst(cb,'CMS_cTagWeight_FitUnc','shape',ch.SystMap()(1.0))
+  cb.cp().AddSyst(cb,'CMS_cTagWeight_XSecs','shape',ch.SystMap()(1.0))
 
 #Luca   cb.cp().AddSyst(cb,'CMS_cTagWeight_btag','shape',ch.SystMap()(1.0))
 #Luca   cb.cp().AddSyst(cb,'CMS_cTagWeight_PU','shape',ch.SystMap()(1.0))

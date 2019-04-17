@@ -417,6 +417,12 @@ cb.cp().channel(['Wen','Wmn']).process(['Wj_ll','Wj_blc','Wj_bbc','Wj_cc','s_Top
 cb.cp().process(['TT']).RenameSystematic(cb,'CMS_LHE_weights_pdf_TT','CMS_LHE_weights_pdf_ttbar')
 cb.cp().process(['TT']).RenameSystematic(cb,'CMS_LHE_weights_scale_muR_TT','CMS_LHE_weights_scale_muR_ttbar')
 cb.cp().process(['TT']).RenameSystematic(cb,'CMS_LHE_weights_scale_muF_TT','CMS_LHE_weights_scale_muF_ttbar')
+cb.cp().process(['VVother']).RenameSystematic(cb,'CMS_LHE_weights_pdf_VVother','CMS_LHE_weights_pdf_vvother')
+cb.cp().process(['VVcc']).RenameSystematic(cb,'CMS_LHE_weights_pdf_VVcc','CMS_LHE_weights_pdf_vzcc')
+cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVother']).RenameSystematic(cb,'CMS_LHE_weights_scale_muR_VVother','CMS_LHE_weights_scale_muR_vvother')
+cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVcc']).RenameSystematic(cb,'CMS_LHE_weights_scale_muR_VVcc','CMS_LHE_weights_scale_muR_vzcc')
+cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVother']).RenameSystematic(cb,'CMS_LHE_weights_scale_muF_VVother','CMS_LHE_weights_scale_muF_vvother')
+cb.cp().channel(['Wen','Wmn','Zmm','Zee']).process(['VVcc']).RenameSystematic(cb,'CMS_LHE_weights_scale_muF_VVcc','CMS_LHE_weights_scale_muF_vzcc')
 
 
 #Luca cb.cp().signals().RenameSystematic(cb,'CMS_res_j_reg_13TeV','CMS_signal_resolution_13TeV')
