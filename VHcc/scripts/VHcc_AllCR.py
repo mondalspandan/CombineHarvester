@@ -219,7 +219,7 @@ else:
 if args.mjj:
 
     # don't fit QCD anywhere for Mjj!
-    bkg_procs['Znn'].remove('QCD')
+    #Luca bkg_procs['Znn'].remove('QCD')
 
     cats = {
       'Zee' : [
@@ -252,7 +252,7 @@ for chn in chns:
   cb.AddProcesses( ['*'], ['vhcc'], ['13TeV'], [chn], sig_procs[chn], cats[chn], True)
 
 # Filter QCD from processes in Znn
-cb.FilterProcs(lambda x: x.bin_id()==1 and x.channel()=='Znn' and x.process()=='QCD')
+#Luca cb.FilterProcs(lambda x: x.bin_id()==1 and x.channel()=='Znn' and x.process()=='QCD')
   
 systs.AddCommonSystematics(cb)
 if year=='2016':
@@ -271,10 +271,20 @@ elif args.bbb_mode==1:
 for chn in chns:
   file = shapes + input_folders[chn] + "/vhcc_"+chn+"-"+year+".root"
   if input_fwks[chn] == 'AT':
-    cb.cp().channel([chn]).backgrounds().ExtractShapes(
+    cb.cp().channel([chn]).backgrounds().bin_id([3,4,5,6,7,8,9,10]).ExtractShapes(
       file, 'BDT_$BIN_$PROCESS', 'BDT_$BIN_$PROCESS_$SYSTEMATIC')
-    cb.cp().channel([chn]).signals().ExtractShapes(
+    cb.cp().channel([chn]).signals().bin_id([3,4,5,6,7,8,9,10]).ExtractShapes(
       file, 'BDT_$BIN_$PROCESS', 'BDT_$BIN_$PROCESS_$SYSTEMATIC')
+    if not args.doVV:
+      cb.cp().channel([chn]).backgrounds().bin_id([1,2]).ExtractShapes(
+        file, 'BDT_VH_$BIN_$PROCESS', 'BDT_VH_$BIN_$PROCESS_$SYSTEMATIC')
+      cb.cp().channel([chn]).signals().bin_id([1,2]).ExtractShapes(
+        file, 'BDT_VH_$BIN_$PROCESS', 'BDT_VH_$BIN_$PROCESS_$SYSTEMATIC')
+    if args.doVV:
+      cb.cp().channel([chn]).backgrounds().bin_id([1,2]).ExtractShapes(
+        file, 'BDT_VZ_$BIN_$PROCESS', 'BDT_VZ_$BIN_$PROCESS_$SYSTEMATIC')
+      cb.cp().channel([chn]).signals().bin_id([1,2]).ExtractShapes(
+        file, 'BDT_VZ_$BIN_$PROCESS', 'BDT_VZ_$BIN_$PROCESS_$SYSTEMATIC')
 
 # play with rebinning (and/or cutting) of the shapes
 if args.rebinning_scheme == 'zll-rebin':
@@ -388,16 +398,27 @@ if args.rebinning_scheme == 'CC1b': # rebinning for H-analysis
   print 'binning in CC CRs:',binning,'for Wln,Znn channels'
   cb.cp().channel(['Wen','Wmn','Znn']).bin_id([9]).VariableRebin(binning)
 
-if args.rebinning_scheme == 'HFZnn1b': # rebinning for H-analysis
-  binning=np.linspace(0.0,0.9,num=2)
+if args.rebinning_scheme == 'HFZnn15b': # rebinning for H-analysis
+  binning=np.linspace(0.05,0.9,num=15)
   print 'binning in HF CRs:',binning,'for Znn channels'
   cb.cp().channel(['Znn']).bin_id([5]).VariableRebin(binning)
-  
 
+if args.rebinning_scheme == 'LF1b_HF7b': # rebinning for H-analysis
+  binning=np.linspace(0.0,0.4,num=2)
+  print 'binning in LF CRs:',binning,'for Zll channels'
+  cb.cp().channel(['Zee','Zmm']).bin_id([3,4]).VariableRebin(binning)
+  binning=np.linspace(0.0,0.4,num=2)
+  print 'binning in LF CRs:',binning,'for Wln,Znn channels'
+  cb.cp().channel(['Wen','Wmn','Znn']).bin_id([3]).VariableRebin(binning)
+  binning=np.linspace(0.0,0.9,num=8)
+  print 'binning in HF CRs:',binning,'for Wln,Znn channel'
+  cb.cp().channel(['Wen','Wmn','Znn']).bin_id([5]).VariableRebin(binning)
+
+  
 cb.FilterProcs(lambda x: drop_zero_procs(cb,x))
 cb.FilterSysts(lambda x: drop_zero_systs(x))
 #AUTHORIZED PERSON ONLY!! Drop QCD in Z+HF CR
-cb.FilterProcs(lambda x: drop_znnqcd(cb,x))
+#Luca cb.FilterProcs(lambda x: drop_znnqcd(cb,x))
 
 if args.doVV:
     cb.FilterSysts(lambda x: x.name() in "CMS_vhbb_VVcc")
