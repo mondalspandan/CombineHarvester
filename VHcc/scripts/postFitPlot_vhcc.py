@@ -626,10 +626,10 @@ if args.subbkg!=0:
   legend = plot.PositionedLegend(0.4,0.22,3,0.03)
   plot.Set(legend, NColumns=1)
 else:
-  legend = plot.PositionedLegend(0.47,0.30,3,0.03)
+  legend = plot.PositionedLegend(0.350,0.30,3,0.03)
   plot.Set(legend, NColumns=2)
 legend.SetTextFont(42)
-legend.SetTextSize(0.030)
+legend.SetTextSize(0.028)
 legend.SetFillColor(0)
 legend.AddEntry(total_datahist,"Data","PE")
 #Drawn on legend in reverse order looks better

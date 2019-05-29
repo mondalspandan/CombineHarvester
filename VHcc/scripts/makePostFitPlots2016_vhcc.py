@@ -18,7 +18,7 @@ for MODE in ['prefit','postfit']:
               LABEL = "%s" % CHN_DICT_SR[CHN][i][1]
               OUTNAME = "%s" % CHN_DICT_SR[CHN][i][0]
               os.system(('./scripts/postFitPlot_vhcc.py' \
-                  ' --file=shapes_VHincl_14May.root --ratio --extra_pad=0.53 --file_dir=%(OUTNAME)s ' \
+                  ' --file=shapes_VHpt300_15May.root --ratio --extra_pad=0.53 --file_dir=%(OUTNAME)s ' \
 #                  ' --ratio_range 0.4,1.6 --empty_bin_error --channel=%(CHN)s --blind --x_blind_min 0.75 --x_blind_max 1.0 --x_title BDT --doVV True' \
                   ' --ratio_range 0.4,1.6 --empty_bin_error --channel=%(CHN)s --x_title BDT' \
                   ' --outname %(OUTNAME)s --mode %(MODE)s --log_y --custom_y_range --y_axis_min "5E-4" '\
