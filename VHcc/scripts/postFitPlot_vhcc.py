@@ -363,6 +363,10 @@ for i in range(0,sighist.GetNbinsX()):
   if sighist_prefit.GetBinContent(i) < y_axis_min: sighist_prefit.SetBinContent(i,y_axis_min)
 bkghist = getHistogram(histo_file,'TotalBkg',file_dir, mode, logx=log_x)[0]
 splusbhist = getHistogram(histo_file,'TotalProcs',file_dir, mode, logx=log_x)[0]
+
+for i in range(1,splusbhist.GetNbinsX()+1):
+  print 'bin: ', i, '  expected events = ', splusbhist.GetBinContent(i), ' +/- ', splusbhist.GetBinError(i)
+
 if args.subbkg!=0:
   splusbhist_total = getHistogram(histo_file,'TotalProcs',file_dir, mode, logx=log_x)[0]
   vvhist = getHistogram(histo_file,'VVcc',file_dir, mode, logx=log_x)[0]
@@ -379,6 +383,10 @@ binerror_datahist = total_datahist.Clone()
 blind_datahist = total_datahist.Clone()
 total_datahist.SetMarkerStyle(20)
 blind_datahist.SetMarkerStyle(20)
+
+for i in range(1,total_datahist.GetNbinsX()+1):
+  print 'bin: ', i, '  observed events = ', total_datahist.GetBinContent(i)
+
 if args.subbkg!=0:
   blind_datahist.SetLineWidth(2)
 blind_datahist.SetLineColor(1)

@@ -142,6 +142,8 @@ parser.add_argument(
  '--vjetsNLO', default=False, help="""if True assume we are running with V+jets NLO samples""")
 parser.add_argument(
  '--mjj',  default=True, help="""if True assume we are running the mjj analysis""")
+parser.add_argument(
+ '--doHbb',  default=True, help="""if True assume producing the datacards with VHbb as signal process""")
 
 args = parser.parse_args()
 
@@ -211,16 +213,25 @@ input_folders = {
 }
 
 if not args.doVV:
-  bkg_procs = {
-    'Wen' : ['WH_hbb','ZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
-    'Wmn' : ['WH_hbb','ZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
-    'Zmm' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
-    'Zee' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
-    'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVother','VVcc','QCD'],
-    #'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVother','VVbb','VVcc'],
-  }
+  if not args.doHbb:
+    bkg_procs = {
+      'Wen' : ['WH_hbb','ZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
+      'Wmn' : ['WH_hbb','ZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
+      'Zmm' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
+      'Zee' : ['ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
+      'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVother','VVcc','QCD'],
+      #'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVother','VVbb','VVcc'],
+    }
+  else:
+    bkg_procs = {
+      'Wen' : ['WH_hcc','ZH_hcc','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
+      'Wmn' : ['WH_hcc','ZH_hcc','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
+      'Zmm' : ['ZH_hcc','ggZH_hcc','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
+      'Zee' : ['ZH_hcc','ggZH_hcc','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother','VVcc'],
+      'Znn' : ['ZH_hcc','ggZH_hcc','WH_hcc','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','VVother','VVcc','QCD'],
+    }
 else:
-  bkg_procs = {
+    bkg_procs = {
     'Wen' : ['WH_hcc','ZH_hcc','WH_hbb','ZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother'],
     'Wmn' : ['WH_hcc','ZH_hcc','WH_hbb','ZH_hbb','s_Top','TT','Wj_ll','Wj_blc','Wj_bbc','Wj_cc','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother'],
     'Zmm' : ['ZH_hcc','ggZH_hcc','ZH_hbb','ggZH_hbb','s_Top','TT','Zj_ll','Zj_blc','Zj_bbc','Zj_cc','VVother'],
@@ -229,14 +240,23 @@ else:
   }
 
 if not args.doVV:
-  sig_procs = {
-    'Wen' : ['WH_hcc','ZH_hcc'],
-    'Wmn' : ['WH_hcc','ZH_hcc'],
-    'Zmm' : ['ZH_hcc','ggZH_hcc'],
-    'Zee' : ['ZH_hcc','ggZH_hcc'],
-    'Znn' : ['ZH_hcc','ggZH_hcc','WH_hcc']
+  if not args.doHbb:
+    sig_procs = {
+      'Wen' : ['WH_hcc','ZH_hcc'],
+      'Wmn' : ['WH_hcc','ZH_hcc'],
+      'Zmm' : ['ZH_hcc','ggZH_hcc'],
+      'Zee' : ['ZH_hcc','ggZH_hcc'],
+      'Znn' : ['ZH_hcc','ggZH_hcc','WH_hcc']
     }
-  
+  else:
+    sig_procs = {
+      'Wen' : ['WH_hbb','ZH_hbb'],
+      'Wmn' : ['WH_hbb','ZH_hbb'],
+      'Zmm' : ['ZH_hbb','ggZH_hbb'],
+      'Zee' : ['ZH_hbb','ggZH_hbb'],
+      'Znn' : ['ZH_hbb','ggZH_hbb','WH_hbb']
+    }
+    
 else:
   sig_procs = {
     'Wen' : ['VVcc'],
