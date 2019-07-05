@@ -143,7 +143,7 @@ parser.add_argument(
 parser.add_argument(
  '--mjj',  default=True, help="""if True assume we are running the mjj analysis""")
 parser.add_argument(
- '--doHbb',  default=True, help="""if True assume producing the datacards with VHbb as signal process""")
+ '--doHbb',  default=False, help="""if True assume producing the datacards with VHbb as signal process""")
 
 args = parser.parse_args()
 
