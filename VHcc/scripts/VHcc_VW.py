@@ -268,20 +268,25 @@ sig_procs = {
 
 cats = {
   'Zee' : [
-    (1, 'SR_high_Zee'), (2, 'SR_low_Zee'), (3, 'Zlf_high_Zee'), (4,'Zlf_low_Zee'),
+    (1, 'SR_high_Zee'), (2, 'SR_low_Zee'), (3, 'Zlf_high_Zee'), (4, 'Zlf_low_Zee'),
     (5, 'Zhf_high_Zee'), (6, 'Zhf_low_Zee'), 
-    (7,'ttbar_high_Zee'), (8,'ttbar_low_Zee'),(9,'Zcc_high_Zee'), (10,'Zcc_low_Zee')
+    (7, 'ttbar_high_Zee'), (8, 'ttbar_low_Zee'),(9, 'Zcc_high_Zee'), (10, 'Zcc_low_Zee'),
+    (11, 'VZCR_high_Zee'), (12, 'VZCR_low_Zee')
   ],
   'Zmm' : [
-    (1, 'SR_high_Zmm'), (2, 'SR_low_Zmm'), (3, 'Zlf_high_Zmm'), (4,'Zlf_low_Zmm'),
+    (1, 'SR_high_Zmm'), (2, 'SR_low_Zmm'), (3, 'Zlf_high_Zmm'), (4, 'Zlf_low_Zmm'),
     (5, 'Zhf_high_Zmm'), (6, 'Zhf_low_Zmm'), 
-    (7,'ttbar_high_Zmm'), (8,'ttbar_low_Zmm'),(9,'Zcc_high_Zmm'), (10,'Zcc_low_Zmm')
+    (7, 'ttbar_high_Zmm'), (8, 'ttbar_low_Zmm'),(9, 'Zcc_high_Zmm'), (10, 'Zcc_low_Zmm'),
+    (11, 'VZCR_high_Zmm'), (12, 'VZCR_low_Zmm')
   ],
   'Wen' : [(1, 'SR_Wenu'), (3,'Wlf_Wenu'), #(5,'Whf_Wenu'), 
-           (7,'ttbar_Wenu'), (9,'Wcc_Wenu')],
+           (7,'ttbar_Wenu'), (9,'Wcc_Wenu'),
+           (11, 'VZCR_Wenu')],
+
   'Wmn' : [(1, 'SR_Wmunu'), (3,'Wlf_Wmunu'), #(5,'Whf_Wmunu'), 
-           (7,'ttbar_Wmunu'), (9,'Wcc_Wmunu')],
-  'Znn' : [(1, 'SR_Znn'), (3,'Vlf_Znn'), (5,'Vhf_Znn'), (7,'ttbar_Znn'), (9,'Vcc_Znn')]
+           (7,'ttbar_Wmunu'), (9,'Wcc_Wmunu'),
+           (11, 'VZCR_Wmunu')],
+  'Znn' : [(1, 'SR_Znn'), (3,'Vlf_Znn'), (5,'Vhf_Znn'), (7,'ttbar_Znn'), (9,'Vcc_Znn'), (11, 'VZCR_Znn')]
 }
     
 
@@ -308,14 +313,16 @@ elif args.bbb_mode==1:
 for chn in chns:
   file = shapes + input_folders[chn] + "/vhcc_"+chn+"-"+year+".root"
   if input_fwks[chn] == 'AT':
-    cb.cp().channel([chn]).backgrounds().bin_id([3,4,5,6,7,8,9,10]).ExtractShapes(
+    cb.cp().channel([chn]).backgrounds().bin_id([3,4,5,6,7,8,9,10,11,12]).ExtractShapes(
       file, 'BDT_$BIN_$PROCESS', 'BDT_$BIN_$PROCESS_$SYSTEMATIC')
-    cb.cp().channel([chn]).signals().bin_id([3,4,5,6,7,8,9,10]).ExtractShapes(
+    cb.cp().channel([chn]).signals().bin_id([3,4,5,6,7,8,9,10,11,12]).ExtractShapes(
       file, 'BDT_$BIN_$PROCESS', 'BDT_$BIN_$PROCESS_$SYSTEMATIC') 
     cb.cp().channel([chn]).backgrounds().bin_id([1,2]).ExtractShapes(
       file, 'BDT_VW_$BIN_$PROCESS', 'BDT_VW_$BIN_$PROCESS_$SYSTEMATIC')
     cb.cp().channel([chn]).signals().bin_id([1,2]).ExtractShapes(
       file, 'BDT_VW_$BIN_$PROCESS', 'BDT_VW_$BIN_$PROCESS_$SYSTEMATIC')
+#    cb.cp().channel([chn]).signals().bin_id([11,12]).ExtractShapes(
+#      file, 'BDT_$BIN_$PROCESS', 'BDT_$BIN_$PROCESS_$SYSTEMATIC')
 
 
 # play with rebinning (and/or cutting) of the shapes
@@ -373,12 +380,12 @@ if year=='2016':
 
 #  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_ZJets_Low_13TeV_2016')
 #  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_ZJets_High_13TeV_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zc_Low_13TeV_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zb_Low_13TeV_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zl_Low_13TeV_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zc_High_13TeV_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zb_High_13TeV_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zl_High_13TeV_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zc_Low_13TeV_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zb_Low_13TeV_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zl_Low_13TeV_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9,11]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zc_High_13TeV_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9,11]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zb_High_13TeV_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9,11]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zl_High_13TeV_2016')
   cb.cp().channel(['Zee','Zmm']).process(['TT']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_TT_13TeV_2016')
   cb.cp().channel(['Zee','Zmm']).process(['s_Top']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_s_Top_13TeV_2016')
   cb.cp().channel(['Zee','Zmm']).process(['VVother']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_VVother_13TeV_2016')
@@ -392,9 +399,9 @@ if year=='2016':
 
 #  cb.cp().channel(['Wen','Wmn']).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_ZJets_13TeV_2016')
 #  cb.cp().channel(['Wen','Wmn']).process(['Wj_cj','Wj_bj','Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_WJets_13TeV_2016')
-  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zc_High_13TeV_2016')
-  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zb_High_13TeV_2016')
-  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zl_High_13TeV_2016')
+  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9,11]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zc_High_13TeV_2016')
+  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9,11]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zb_High_13TeV_2016')
+  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9,11]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zl_High_13TeV_2016')
   cb.cp().channel(['Wen','Wmn']).process(['Wj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Wc_13TeV_2016')
   cb.cp().channel(['Wen','Wmn']).process(['Wj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Wb_13TeV_2016')
   cb.cp().channel(['Wen','Wmn']).process(['Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Wl_13TeV_2016')
@@ -411,9 +418,9 @@ if year=='2016':
 
 #  cb.cp().channel(['Znn']).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_ZJets_13TeV_2016')
 #  cb.cp().channel(['Znn']).process(['Wj_cj','Wj_bj','Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_WJets_13TeV_2016')
-  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zc_High_13TeV_2016')
-  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zb_High_13TeV_2016')
-  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zl_High_13TeV_2016')
+  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9,11]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zc_High_13TeV_2016')
+  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9,11]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zb_High_13TeV_2016')
+  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9,11]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Zl_High_13TeV_2016')
   cb.cp().channel(['Znn']).process(['Wj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Wc_13TeV_2016')
   cb.cp().channel(['Znn']).process(['Wj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Wb_13TeV_2016')
   cb.cp().channel(['Znn']).process(['Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2016','CMS_PostCTagWeight_Wl_13TeV_2016')
@@ -496,27 +503,27 @@ if year=='2016':
 
 #  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2016','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_2016')
 #  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2016','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_2016')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2016','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2016')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2016','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2016')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2016','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2016')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2016','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2016')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2016','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2016')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9,11]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2016','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2016')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2016','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2016')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9,11]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2016','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2016')
 
   cb.cp().channel(['Znn']).process(['Zj_cj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2016','CMS_vhcc_dRjjReweight_Flavour_Znnj_cj_2016')
   cb.cp().channel(['Znn']).process(['Zj_bj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2016','CMS_vhcc_dRjjReweight_Flavour_Znnj_bj_2016')
 
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_JEC_2016','CMS_cTagWeight_JEC_Low_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_JES_2016','CMS_cTagWeight_JES_Low_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_JER_2016','CMS_cTagWeight_JER_Low_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_PU_2016','CMS_cTagWeight_PU_Low_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_EleId_2016','CMS_cTagWeight_EleId_Low_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_MuId_2016','CMS_cTagWeight_MuId_Low_2016')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_muR','CMS_cTagWeight_muR_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_muF','CMS_cTagWeight_muF_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecDYJets','CMS_cTagWeight_XSecDYJets_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecST','CMS_cTagWeight_XSecST_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecWJets','CMS_cTagWeight_XSecWJets_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecTTbar','CMS_cTagWeight_XSecTTbar_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_Stat_2016','CMS_cTagWeight_Stat_2016_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_JEC_2016','CMS_cTagWeight_JEC_Low_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_JES_2016','CMS_cTagWeight_JES_Low_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_JER_2016','CMS_cTagWeight_JER_Low_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_PU_2016','CMS_cTagWeight_PU_Low_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_EleId_2016','CMS_cTagWeight_EleId_Low_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_MuId_2016','CMS_cTagWeight_MuId_Low_2016')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_muR','CMS_cTagWeight_muR_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_muF','CMS_cTagWeight_muF_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecDYJets','CMS_cTagWeight_XSecDYJets_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecST','CMS_cTagWeight_XSecST_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecWJets','CMS_cTagWeight_XSecWJets_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecTTbar','CMS_cTagWeight_XSecTTbar_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_Stat_2016','CMS_cTagWeight_Stat_2016_Low')
 
 
 if year=='2017':
@@ -541,12 +548,12 @@ if year=='2017':
 
 #  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_ZJets_Low_13TeV_2017')
 #  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_ZJets_High_13TeV_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zc_Low_13TeV_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zb_Low_13TeV_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zl_Low_13TeV_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zc_High_13TeV_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zb_High_13TeV_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zl_High_13TeV_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zc_Low_13TeV_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zb_Low_13TeV_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zl_Low_13TeV_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9,11]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zc_High_13TeV_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9,11]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zb_High_13TeV_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9,11]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zl_High_13TeV_2017')
   cb.cp().channel(['Zee','Zmm']).process(['TT']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_TT_13TeV_2017')
   cb.cp().channel(['Zee','Zmm']).process(['s_Top']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_s_Top_13TeV_2017')
   cb.cp().channel(['Zee','Zmm']).process(['VVother']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_VVother_13TeV_2017')
@@ -560,9 +567,9 @@ if year=='2017':
 
 #  cb.cp().channel(['Wen','Wmn']).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_ZJets_13TeV_2017')
 #  cb.cp().channel(['Wen','Wmn']).process(['Wj_cj','Wj_bj','Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_WJets_13TeV_2017')
-  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zc_High_13TeV_2017')
-  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zb_High_13TeV_2017')
-  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zl_High_13TeV_2017')
+  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9,11]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zc_High_13TeV_2017')
+  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9,11]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zb_High_13TeV_2017')
+  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9,11]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zl_High_13TeV_2017')
   cb.cp().channel(['Wen','Wmn']).process(['Wj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Wc_13TeV_2017')
   cb.cp().channel(['Wen','Wmn']).process(['Wj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Wb_13TeV_2017')
   cb.cp().channel(['Wen','Wmn']).process(['Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Wl_13TeV_2017')
@@ -579,9 +586,9 @@ if year=='2017':
 
 #  cb.cp().channel(['Znn']).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_ZJets_13TeV_2017')
 #  cb.cp().channel(['Znn']).process(['Wj_cj','Wj_bj','Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_WJets_13TeV_2017')
-  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zc_High_13TeV_2017')
-  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zb_High_13TeV_2017')
-  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zl_High_13TeV_2017')
+  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9,11]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zc_High_13TeV_2017')
+  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9,11]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zb_High_13TeV_2017')
+  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9,11]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Zl_High_13TeV_2017')
   cb.cp().channel(['Znn']).process(['Wj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Wc_13TeV_2017')
   cb.cp().channel(['Znn']).process(['Wj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Wb_13TeV_2017')
   cb.cp().channel(['Znn']).process(['Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2017','CMS_PostCTagWeight_Wl_13TeV_2017')
@@ -619,28 +626,28 @@ if year=='2017':
 
 #  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2017','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_2017')
 #  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2017','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_2017')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2017','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2017')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2017','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2017')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2017','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2017')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2017','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2017')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2017','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2017')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9,11]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2017','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2017')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2017','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2017')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9,11]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2017','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2017')
 
   cb.cp().channel(['Znn']).process(['Zj_cj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2017','CMS_vhcc_dRjjReweight_Flavour_Znnj_cj_2017')
   cb.cp().channel(['Znn']).process(['Zj_bj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2017','CMS_vhcc_dRjjReweight_Flavour_Znnj_bj_2017')
 
 
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_JEC_2017','CMS_cTagWeight_JEC_Low_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_JES_2017','CMS_cTagWeight_JES_Low_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_JER_2017','CMS_cTagWeight_JER_Low_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_PU_2017','CMS_cTagWeight_PU_Low_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_EleId_2017','CMS_cTagWeight_EleId_Low_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_MuId_2017','CMS_cTagWeight_MuId_Low_2017')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_muR','CMS_cTagWeight_muR_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_muF','CMS_cTagWeight_muF_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecDYJets','CMS_cTagWeight_XSecDYJets_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecST','CMS_cTagWeight_XSecST_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecWJets','CMS_cTagWeight_XSecWJets_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecTTbar','CMS_cTagWeight_XSecTTbar_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_Stat_2017','CMS_cTagWeight_Stat_2017_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_JEC_2017','CMS_cTagWeight_JEC_Low_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_JES_2017','CMS_cTagWeight_JES_Low_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_JER_2017','CMS_cTagWeight_JER_Low_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_PU_2017','CMS_cTagWeight_PU_Low_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_EleId_2017','CMS_cTagWeight_EleId_Low_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_MuId_2017','CMS_cTagWeight_MuId_Low_2017')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_muR','CMS_cTagWeight_muR_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_muF','CMS_cTagWeight_muF_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecDYJets','CMS_cTagWeight_XSecDYJets_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecST','CMS_cTagWeight_XSecST_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecWJets','CMS_cTagWeight_XSecWJets_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecTTbar','CMS_cTagWeight_XSecTTbar_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_Stat_2017','CMS_cTagWeight_Stat_2017_Low')
 
 
 
@@ -666,12 +673,12 @@ if year=='2018':
 
 #  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_ZJets_Low_13TeV_2018')
 #  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_ZJets_High_13TeV_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zc_Low_13TeV_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zb_Low_13TeV_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zl_Low_13TeV_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zc_High_13TeV_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zb_High_13TeV_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zl_High_13TeV_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zc_Low_13TeV_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zb_Low_13TeV_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zl_Low_13TeV_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9,11]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zc_High_13TeV_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9,11]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zb_High_13TeV_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([1,3,5,7,9,11]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zl_High_13TeV_2018')
   cb.cp().channel(['Zee','Zmm']).process(['TT']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_TT_13TeV_2018')
   cb.cp().channel(['Zee','Zmm']).process(['s_Top']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_s_Top_13TeV_2018')
   cb.cp().channel(['Zee','Zmm']).process(['VVother']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_VVother_13TeV_2018')
@@ -685,9 +692,9 @@ if year=='2018':
 
 #  cb.cp().channel(['Wen','Wmn']).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_ZJets_13TeV_2018')
 #  cb.cp().channel(['Wen','Wmn']).process(['Wj_cj','Wj_bj','Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_WJets_13TeV_2018')
-  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zc_High_13TeV_2018')
-  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zb_High_13TeV_2018')
-  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zl_High_13TeV_2018')
+  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9,11]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zc_High_13TeV_2018')
+  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9,11]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zb_High_13TeV_2018')
+  cb.cp().channel(['Wen','Wmn']).bin_id([1,3,5,7,9,11]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zl_High_13TeV_2018')
   cb.cp().channel(['Wen','Wmn']).process(['Wj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Wc_13TeV_2018')
   cb.cp().channel(['Wen','Wmn']).process(['Wj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Wb_13TeV_2018')
   cb.cp().channel(['Wen','Wmn']).process(['Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Wl_13TeV_2018')
@@ -704,9 +711,9 @@ if year=='2018':
 
 #  cb.cp().channel(['Znn']).process(['Zj_cj','Zj_bj','Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_ZJets_13TeV_2018')
 #  cb.cp().channel(['Znn']).process(['Wj_cj','Wj_bj','Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_WJets_13TeV_2018')
-  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zc_High_13TeV_2018')
-  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zb_High_13TeV_2018')
-  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zl_High_13TeV_2018')
+  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9,11]).process(['Zj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zc_High_13TeV_2018')
+  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9,11]).process(['Zj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zb_High_13TeV_2018')
+  cb.cp().channel(['Znn']).bin_id([1,3,5,7,9,11]).process(['Zj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Zl_High_13TeV_2018')
   cb.cp().channel(['Znn']).process(['Wj_cj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Wc_13TeV_2018')
   cb.cp().channel(['Znn']).process(['Wj_bj']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Wb_13TeV_2018')
   cb.cp().channel(['Znn']).process(['Wj_ll']).RenameSystematic(cb,'CMS_PostCTagWeight_13TeV_2018','CMS_PostCTagWeight_Wl_13TeV_2018')
@@ -744,28 +751,28 @@ if year=='2018':
 
 #  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2018','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_2018')
 #  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2018','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_2018')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2018','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2018')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2018','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2018')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2018','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2018')
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2018','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2018')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2018','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2018')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9,11]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2018','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2018')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2018','CMS_vhcc_dRjjReweight_Flavour_DYZj_cj_Low_2018')
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).bin_id([1,3,5,7,9,11]).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2018','CMS_vhcc_dRjjReweight_Flavour_DYZj_bj_High_2018')
 
   cb.cp().channel(['Znn']).process(['Zj_cj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2018','CMS_vhcc_dRjjReweight_Flavour_Znnj_cj_2018')
   cb.cp().channel(['Znn']).process(['Zj_bj']).RenameSystematic(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2018','CMS_vhcc_dRjjReweight_Flavour_Znnj_bj_2018')
 
 
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_JEC_2018','CMS_cTagWeight_JEC_Low_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_JES_2018','CMS_cTagWeight_JES_Low_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_JER_2018','CMS_cTagWeight_JER_Low_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_PU_2018','CMS_cTagWeight_PU_Low_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_EleId_2018','CMS_cTagWeight_EleId_Low_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_MuId_2018','CMS_cTagWeight_MuId_Low_2018')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_muR','CMS_cTagWeight_muR_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_muF','CMS_cTagWeight_muF_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecDYJets','CMS_cTagWeight_XSecDYJets_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecST','CMS_cTagWeight_XSecST_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecWJets','CMS_cTagWeight_XSecWJets_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_XSecTTbar','CMS_cTagWeight_XSecTTbar_Low')
-  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10]).RenameSystematic(cb,'CMS_cTagWeight_Stat_2018','CMS_cTagWeight_Stat_2018_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_JEC_2018','CMS_cTagWeight_JEC_Low_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_JES_2018','CMS_cTagWeight_JES_Low_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_JER_2018','CMS_cTagWeight_JER_Low_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_PU_2018','CMS_cTagWeight_PU_Low_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_EleId_2018','CMS_cTagWeight_EleId_Low_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_MuId_2018','CMS_cTagWeight_MuId_Low_2018')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_muR','CMS_cTagWeight_muR_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_muF','CMS_cTagWeight_muF_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecDYJets','CMS_cTagWeight_XSecDYJets_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecST','CMS_cTagWeight_XSecST_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecWJets','CMS_cTagWeight_XSecWJets_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_XSecTTbar','CMS_cTagWeight_XSecTTbar_Low')
+  cb.cp().channel(['Zee','Zmm']).bin_id([2,4,6,8,10,12]).RenameSystematic(cb,'CMS_cTagWeight_Stat_2018','CMS_cTagWeight_Stat_2018_Low')
 
 
 if year=='2017' or year=='2018':
