@@ -40,7 +40,7 @@ def AddCommonSystematics(cb):
 
   # Measured cross section uncertainties because we don't have SF
 ### as in VHcc  cb.cp().process(['VVother','VWother','VZcc','VWcq']).AddSyst(cb,'CMS_vhcc_VV', 'lnN', ch.SystMap()(1.05)) 
-  cb.cp().process(['VVother']).AddSyst(cb,'CMS_vhcc_VV', 'lnN', ch.SystMap()(1.05)) 
+  cb.cp().process(['VVother','VWother']).AddSyst(cb,'CMS_vhcc_VV', 'lnN', ch.SystMap()(1.05)) 
   cb.cp().process(['s_Top']).AddSyst(cb,'CMS_vhcc_ST', 'lnN', ch.SystMap()(1.15)) 
 
 
@@ -52,7 +52,7 @@ def AddCommonSystematics(cb):
   cb.cp().process(['ggZH_hbb','ggZH_hcc']).AddSyst(cb,'CMS_LHE_pdf_ggZH', 'lnN', ch.SystMap()(1.023)) 
   cb.cp().process(['ZH_hbb','ZH_hcc']).AddSyst(cb,'CMS_LHE_pdf_ZH', 'lnN', ch.SystMap()(1.018)) 
   cb.cp().process(['WH_hbb','WH_hcc']).AddSyst(cb,'CMS_LHE_pdf_WH', 'lnN', ch.SystMap()(1.018))
-  cb.cp().process(['TT','TTcq','TTud']).AddSyst(cb,'CMS_LHE_pdf_TT', 'lnN', ch.SystMap()(1.0265))
+  cb.cp().process(['TT']).AddSyst(cb,'CMS_LHE_pdf_TT', 'lnN', ch.SystMap()(1.0265))
   cb.cp().process(['s_Top']).AddSyst(cb,'CMS_LHE_pdf_ST', 'lnN', ch.SystMap()(1.0288))
   cb.cp().process(['Zj_ll']).AddSyst(cb,'CMS_LHE_pdf_Zj_ll', 'lnN', ch.SystMap()(1.027))
   cb.cp().process(['Zj_bj']).AddSyst(cb,'CMS_LHE_pdf_Zj_bj', 'lnN', ch.SystMap()(1.027))
@@ -106,94 +106,77 @@ def AddSystematics2016(cb, splitJEC=False):
 ####################### SCALE FACTORS RATEPARAM
   
   # TT Zll
-  cb.cp().channel(['Zee','Zmm']).process(['TT','TTcq','TTud']).AddSyst(cb,
-     'SF_TT_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+  cb.cp().channel(['Zee','Zmm']).process(['TT']).AddSyst(cb,
+     'SF_TT_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
-  cb.cp().channel(['Zee','Zmm']).process(['TT','TTcq','TTud']).AddSyst(cb,
-     'SF_TT_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+  cb.cp().channel(['Zee','Zmm']).process(['TT']).AddSyst(cb,
+     'SF_TT_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # Zj_ll Zll
   cb.cp().channel(['Zee','Zmm']).process(['Zj_ll']).AddSyst(cb,
-     'SF_Zj_ll_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_ll_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['Zj_ll']).AddSyst(cb,
-     'SF_Zj_ll_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_Zj_ll_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # Zj_bj Zll
   cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).AddSyst(cb,
-     'SF_Zj_bj_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_bj_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).AddSyst(cb,
-     'SF_Zj_bj_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_Zj_bj_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # Zj_cj Zll
   cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).AddSyst(cb,
-     'SF_Zj_cj_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_cj_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).AddSyst(cb,
-     'SF_Zj_cj_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_Zj_cj_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # VZcc Zll
   cb.cp().channel(['Zee','Zmm']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_VZcc_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
-
-  # VWother Zll
-  cb.cp().channel(['Zee','Zmm']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_high_Zll_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
-
-  cb.cp().channel(['Zee','Zmm']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_VZcc_low_Zll_2016', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # TT Znn
   cb.cp().channel(['Znn']).process(['TT']).AddSyst(cb,
-     'SF_TT_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_TT_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Zj_ll Znn
   cb.cp().channel(['Znn']).process(['Zj_ll']).AddSyst(cb,
-     'SF_Zj_ll_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_ll_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Zj_bj Znn
   cb.cp().channel(['Znn']).process(['Zj_bj']).AddSyst(cb,
-     'SF_Zj_bj_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_bj_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Zj_cj Znn
   cb.cp().channel(['Znn']).process(['Zj_cj']).AddSyst(cb,
-     'SF_Zj_cj_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_cj_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # VZcc Znn
   cb.cp().channel(['Znn']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
-
-  # VWother Znn
-  cb.cp().channel(['Znn']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_VZcc_Znn_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # TT Wln
   cb.cp().channel(['Wen','Wmn']).process(['TT']).AddSyst(cb,
-     'SF_TT_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,8,9,11,13],1.0))
-  cb.cp().channel(['Wen','Wmn']).process(['TTcq']).AddSyst(cb,
-     'SF_TTcq_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,8,9,11,13],1.0))
-  cb.cp().channel(['Wen','Wmn']).process(['TTud']).AddSyst(cb,
-     'SF_TTud_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,8,9,11,13],1.0))
+     'SF_TT_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Wj_ll Wln
   cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_ll']).AddSyst(cb,
-     'SF_Wj_ll_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Wj_ll_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Wj_cj Wln
   cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_cj','Wj_bj']).AddSyst(cb,
-     'SF_Wj_cj_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Wj_cj_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # VZcc Wln
   cb.cp().channel(['Wen','Wmn']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_VZcc_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
-  # VWother Wln
-  cb.cp().channel(['Wen','Wmn']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_Wln_2016', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+
 
 
   #Set a sensible range for the rate params
@@ -307,93 +290,75 @@ def AddSystematics2017(cb, splitJEC=False):
 
   # TT Zll
   cb.cp().channel(['Zee','Zmm']).process(['TT']).AddSyst(cb,
-     'SF_TT_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_TT_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['TT']).AddSyst(cb,
-     'SF_TT_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_TT_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # Zj_ll Zll
   cb.cp().channel(['Zee','Zmm']).process(['Zj_ll']).AddSyst(cb,
-     'SF_Zj_ll_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_ll_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['Zj_ll']).AddSyst(cb,
-     'SF_Zj_ll_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_Zj_ll_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # Zj_bj Zll
   cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).AddSyst(cb,
-     'SF_Zj_bj_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_bj_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).AddSyst(cb,
-     'SF_Zj_bj_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_Zj_bj_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # Zj_cj Zll
   cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).AddSyst(cb,
-     'SF_Zj_cj_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_cj_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).AddSyst(cb,
-     'SF_Zj_cj_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_Zj_cj_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # VZcc Zll
   cb.cp().channel(['Zee','Zmm']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_VZcc_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
-
-  # VWother Zll
-  cb.cp().channel(['Zee','Zmm']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_high_Zll_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
-
-  cb.cp().channel(['Zee','Zmm']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_VZcc_low_Zll_2017', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # TT Znn
   cb.cp().channel(['Znn']).process(['TT']).AddSyst(cb,
-     'SF_TT_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_TT_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Zj_ll Znn
   cb.cp().channel(['Znn']).process(['Zj_ll']).AddSyst(cb,
-     'SF_Zj_ll_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_ll_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Zj_bj Znn
   cb.cp().channel(['Znn']).process(['Zj_bj']).AddSyst(cb,
-     'SF_Zj_bj_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_bj_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Zj_cj Znn
   cb.cp().channel(['Znn']).process(['Zj_cj']).AddSyst(cb,
-     'SF_Zj_cj_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_cj_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # VZcc Znn
   cb.cp().channel(['Znn']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
-
-  # VWother Znn
-  cb.cp().channel(['Znn']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_VZcc_Znn_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # TT Wln
   cb.cp().channel(['Wen','Wmn']).process(['TT']).AddSyst(cb,
-     'SF_TT_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,8,11,13],1.0))
-  cb.cp().channel(['Wen','Wmn']).process(['TTcq']).AddSyst(cb,
-     'SF_TTcq_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,8,11,13],1.0))
-  cb.cp().channel(['Wen','Wmn']).process(['TTud']).AddSyst(cb,
-     'SF_TTud_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,8,11,13],1.0))
+     'SF_TT_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Wj_ll Wln
   cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_ll']).AddSyst(cb,
-     'SF_Wj_ll_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Wj_ll_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Wj_cj Wln
   cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_cj','Wj_bj']).AddSyst(cb,
-     'SF_Wj_cj_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Wj_cj_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # VZcc Wln
   cb.cp().channel(['Wen','Wmn']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_VZcc_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
-  # VWother Wln
-  cb.cp().channel(['Wen','Wmn']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_Wln_2017', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
 
   #Set a sensible range for the rate params
   for syst in cb.cp().syst_type(["rateParam"]).syst_name_set():
@@ -476,20 +441,20 @@ def AddSystematics2017(cb, splitJEC=False):
 
 #fit uncertainties on DY(ll)+jets process (taken from 2L, but applied to DY+jets in all the channels)
 #  cb.cp().channel(['Zee','Zmm','Wen','Wmn','Znn']).process(['Zj_ll','Zj_bj','Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Zll_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6],1.0))
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_ll','Zj_bj','Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Zll_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_ll','Zj_bj','Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Zll_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
 
 #fit uncertainties on W+jets process (taken from 1L, but applied to W+jets in all the channels: 1L and 0L)
-  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_ll','Wj_bj','Wj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Wln_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_ll','Wj_bj','Wj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Wln_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
 
 #fit uncertainties on Z(nn)+jets process (taken from 0L, but applied to Z(nn)+jets in all the channels: 0L only in this case)
-  cb.cp().channel(['Znn']).process(['Zj_ll','Zj_bj','Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Znn_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
+  cb.cp().channel(['Znn']).process(['Zj_ll','Zj_bj','Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Znn_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
 
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0)) 
-  cb.cp().channel(['Wen','Wmn','Znn']).process(['Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
-  cb.cp().channel(['Wen','Wmn','Znn']).process(['Zj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
-  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Wj_cj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
-  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Wj_bj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0)) 
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['Zj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Wj_cj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Wj_bj_2017','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
 
 
 
@@ -504,93 +469,75 @@ def AddSystematics2018(cb, splitJEC=False):
 
   # TT Zll
   cb.cp().channel(['Zee','Zmm']).process(['TT']).AddSyst(cb,
-     'SF_TT_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_TT_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['TT']).AddSyst(cb,
-     'SF_TT_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_TT_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # Zj_ll Zll
   cb.cp().channel(['Zee','Zmm']).process(['Zj_ll']).AddSyst(cb,
-     'SF_Zj_ll_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_ll_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['Zj_ll']).AddSyst(cb,
-     'SF_Zj_ll_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_Zj_ll_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # Zj_bj Zll
   cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).AddSyst(cb,
-     'SF_Zj_bj_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_bj_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).AddSyst(cb,
-     'SF_Zj_bj_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_Zj_bj_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # Zj_cj Zll
   cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).AddSyst(cb,
-     'SF_Zj_cj_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_cj_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).AddSyst(cb,
-     'SF_Zj_cj_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_Zj_cj_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # VZcc Zll
   cb.cp().channel(['Zee','Zmm']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_VZcc_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   cb.cp().channel(['Zee','Zmm']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
-
-  # VWother Zll
-  cb.cp().channel(['Zee','Zmm']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_high_Zll_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
-
-  cb.cp().channel(['Zee','Zmm']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12,14],1.0))
+     'SF_VZcc_low_Zll_2018', 'rateParam', ch.SystMap('bin_id')([2,4,6,8,10,12],1.0))
 
   # TT Znn
   cb.cp().channel(['Znn']).process(['TT']).AddSyst(cb,
-     'SF_TT_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_TT_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Zj_ll Znn
   cb.cp().channel(['Znn']).process(['Zj_ll']).AddSyst(cb,
-     'SF_Zj_ll_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_ll_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Zj_bj Znn
   cb.cp().channel(['Znn']).process(['Zj_bj']).AddSyst(cb,
-     'SF_Zj_bj_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_bj_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Zj_cj Znn
   cb.cp().channel(['Znn']).process(['Zj_cj']).AddSyst(cb,
-     'SF_Zj_cj_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Zj_cj_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # VZcc Znn
   cb.cp().channel(['Znn']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
-
-  # VZcc Znn
-  cb.cp().channel(['Znn']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_VZcc_Znn_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # TT Wln
   cb.cp().channel(['Wen','Wmn']).process(['TT']).AddSyst(cb,
-     'SF_TT_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,8,9,11,13],1.0))
-  cb.cp().channel(['Wen','Wmn']).process(['TTcq']).AddSyst(cb,
-     'SF_TTcq_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,8,9,11,13],1.0))
-  cb.cp().channel(['Wen','Wmn']).process(['TTud']).AddSyst(cb,
-     'SF_TTud_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,8,9,11,13],1.0))
+     'SF_TT_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Wj_ll Wln
   cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_ll']).AddSyst(cb,
-     'SF_Wj_ll_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Wj_ll_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # Wj_cj Wln
   cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_cj','Wj_bj']).AddSyst(cb,
-     'SF_Wj_cj_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_Wj_cj_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
   # VZcc Wln
   cb.cp().channel(['Wen','Wmn']).process(['VZcc']).AddSyst(cb,
-     'SF_VZcc_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
+     'SF_VZcc_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11],1.0))
 
-  # VWother Wln
-  cb.cp().channel(['Wen','Wmn']).process(['VWother']).AddSyst(cb,
-     'SF_VWother_Wln_2018', 'rateParam', ch.SystMap('bin_id')([1,3,5,7,9,11,13],1.0))
 
 
   #Set a sensible range for the rate params
@@ -676,15 +623,15 @@ def AddSystematics2018(cb, splitJEC=False):
   cb.cp().channel(['Zee','Zmm']).process(['Zj_ll','Zj_bj','Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Zll_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10],1.0,11,12))
 
 #fit uncertainties on W+jets process (taken from 1L, but applied to W+jets in all the channels: 1L and 0L)
-  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_ll','Wj_bj','Wj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Wln_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_ll','Wj_bj','Wj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Wln_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
 
 #fit uncertainties on Z(nn)+jets process (taken from 0L, but applied to Z(nn)+jets in all the channels: 0L only in this case)
-  cb.cp().channel(['Znn']).process(['Zj_ll','Zj_bj','Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Znn_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
+  cb.cp().channel(['Znn']).process(['Zj_ll','Zj_bj','Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_fit_Znn_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
 
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
-  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0)) 
-  cb.cp().channel(['Wen','Wmn','Znn']).process(['Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
-  cb.cp().channel(['Wen','Wmn','Znn']).process(['Zj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
-  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Wj_cj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
-  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Wj_bj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12,13,14],1.0))
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
+  cb.cp().channel(['Zee','Zmm']).process(['Zj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0)) 
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['Zj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_cj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['Zj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Zj_bj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_cj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Wj_cj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
+  cb.cp().channel(['Wen','Wmn','Znn']).process(['Wj_bj']).AddSyst(cb,'CMS_vhcc_dRjjReweight_Flavour_Wj_bj_2018','shape',ch.SystMap('bin_id')([1,2,3,4,5,6,9,10,11,12],1.0))
 

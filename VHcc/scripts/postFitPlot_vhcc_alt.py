@@ -47,6 +47,7 @@ parser.add_argument('--subbkg',         default=0, help='subtract backgrounds (d
 parser.add_argument('--extralabel',     default='', help='Extra label next to CMS')
 parser.add_argument('--doVZ',    default=False, help='Set True for the VZ(cc) analysis')
 parser.add_argument('--doVW',    default=False, help='Set True for the VW(cq) analysis')
+parser.add_argument('--doVWud',    default=False, help='Set True for the VW(ud) analysis')
 parser.add_argument('--mu',  default='', help='Set mu value for the signal strength')
 parser.add_argument('--keepPreFitSignal',default=False, help='Set to True if want to use the pre-fit signal overlaid (and not stacked) in postfit plots')
 args = parser.parse_args()
@@ -351,6 +352,8 @@ if args.doVW :
            backgroundComp("W+bj",["Wj_bj"],801),
            backgroundComp("W+cj",["Wj_cj"],802),
            backgroundComp("t#bar{t}",["TT"],866),
+           backgroundComp("t#bar{t}cq",["TTcq"],877),
+           backgroundComp("t#bar{t}ud",["TTud"],888),
            backgroundComp("Single top",["s_Top"],859)
            ],
     
@@ -367,6 +370,8 @@ if args.doVW :
            backgroundComp("W+bj",["Wj_bj"],801),
            backgroundComp("W+cj",["Wj_cj"],802),
            backgroundComp("t#bar{t}",["TT"],866),
+           backgroundComp("t#bar{t}cq",["TTcq"],877),
+           backgroundComp("t#bar{t}ud",["TTud"],888),
            backgroundComp("Single top",["s_Top"],859)
          ],
 
@@ -381,6 +386,8 @@ if args.doVW :
            backgroundComp("Z+bj",["Zj_bj"],830),
            backgroundComp("Z+cj",["Zj_cj"],829),
            backgroundComp("t#bar{t}",["TT"],866),
+           backgroundComp("t#bar{t}cq",["TTcq"],877),
+           backgroundComp("t#bar{t}ud",["TTud"],888),
            backgroundComp("Single top",["s_Top"],859)
            ],
 
@@ -394,6 +401,8 @@ if args.doVW :
            backgroundComp("Z+bj",["Zj_bj"],830),
            backgroundComp("Z+cj",["Zj_cj"],829),
            backgroundComp("t#bar{t}",["TT"],866),
+           backgroundComp("t#bar{t}cq",["TTcq"],877),
+           backgroundComp("t#bar{t}ud",["TTud"],888),
            backgroundComp("Single top",["s_Top"],859)
            ],
 
@@ -401,6 +410,93 @@ if args.doVW :
            backgroundComp("VH(H#rightarrowc#bar{c})",["ZH_hcc","WH_hcc","ggZH_hcc"],2),
            backgroundComp("VZ(Z#rightarrowc#bar{c})"+(args.mu),["VZcc"],607),
            signalComp("VW(W#rightarrowcq)"+(args.mu),["VWcq"],608,True),
+           backgroundComp("VV+other",["VVother"], 623),
+           backgroundComp("VW+other",["VWother"], 624),
+           backgroundComp("QCD",["QCD"],16),
+           backgroundComp("Z+udsg",["Zj_ll"],821),
+           backgroundComp("Z+bj",["Zj_bj"],830),
+           backgroundComp("Z+cj",["Zj_cj"],829),
+           backgroundComp("W+udsg",["Wj_ll"],800),
+           backgroundComp("W+bj",["Wj_bj"],801),
+           backgroundComp("W+cj",["Wj_cj"],802),
+           backgroundComp("t#bar{t}",["TT"],866),
+           backgroundComp("Single top",["s_Top"],859)
+           ]
+    }
+
+if args.doVWud :
+  background_schemes = {
+    'Wen':[backgroundComp("VH(H#rightarrowb#bar{b})",["ZH_hbb","WH_hbb"],881),
+           backgroundComp("VH(H#rightarrowc#bar{c})",["ZH_hcc","WH_hcc"],2),
+           backgroundComp("VZ(Z#rightarrowc#bar{c})"+(args.mu),["VZcc"],607),
+           signalComp("VW(W#rightarrowud)"+(args.mu),["VWother"],608,True),
+           backgroundComp("VV+other",["VVother"], 623),
+           backgroundComp("VW+other",["VWother"], 624),
+           backgroundComp("Z+udsg",["Zj_ll"],821),
+           backgroundComp("Z+bj",["Zj_bj"],830),
+           backgroundComp("Z+cj",["Zj_cj"],829),
+           backgroundComp("W+udsg",["Wj_ll"],800),
+           backgroundComp("W+bj",["Wj_bj"],801),
+           backgroundComp("W+cj",["Wj_cj"],802),
+           backgroundComp("t#bar{t}",["TT"],866),
+           backgroundComp("t#bar{t}cq",["TTcq"],877),
+           backgroundComp("t#bar{t}ud",["TTud"],888),
+           backgroundComp("Single top",["s_Top"],859)
+           ],
+    
+    'Wmn':[backgroundComp("VH(H#rightarrowb#bar{b})",["ZH_hbb","WH_hbb"],881),
+           backgroundComp("VH(H#rightarrowc#bar{c})",["ZH_hcc","WH_hcc"],2),
+           backgroundComp("VZ(Z#rightarrowc#bar{c})"+(args.mu),["VZcc"],607),
+           signalComp("VW(W#rightarrowud)"+(args.mu),["VWother"],608,True),
+           backgroundComp("VV+other",["VVother"], 623),
+           backgroundComp("VW+other",["VWother"], 624),
+           backgroundComp("Z+udsg",["Zj_ll"],821),
+           backgroundComp("Z+bj",["Zj_bj"],830),
+           backgroundComp("Z+cj",["Zj_cj"],829),
+           backgroundComp("W+udsg",["Wj_ll"],800),
+           backgroundComp("W+bj",["Wj_bj"],801),
+           backgroundComp("W+cj",["Wj_cj"],802),
+           backgroundComp("t#bar{t}",["TT"],866),
+           backgroundComp("t#bar{t}cq",["TTcq"],877),
+           backgroundComp("t#bar{t}ud",["TTud"],888),
+           backgroundComp("Single top",["s_Top"],859)
+         ],
+
+
+    'Zee':[backgroundComp("VH(H#rightarrowb#bar{b})",["ZH_hbb","ggZH_hbb"],881),
+           backgroundComp("VH(H#rightarrowc#bar{c})",["ZH_hcc","ggZH_hcc"],2),
+           backgroundComp("VZ(Z#rightarrowc#bar{c})"+(args.mu),["VZcc"],607),
+           signalComp("VW(W#rightarrowud)"+(args.mu),["VWother"],608,True),
+           backgroundComp("VV+other",["VVother"], 623),
+           backgroundComp("VW+other",["VWother"], 624),
+           backgroundComp("Z+udsg",["Zj_ll"],821),
+           backgroundComp("Z+bj",["Zj_bj"],830),
+           backgroundComp("Z+cj",["Zj_cj"],829),
+           backgroundComp("t#bar{t}",["TT"],866),
+           backgroundComp("t#bar{t}cq",["TTcq"],877),
+           backgroundComp("t#bar{t}ud",["TTud"],888),
+           backgroundComp("Single top",["s_Top"],859)
+           ],
+
+    'Zmm':[backgroundComp("VH(H#rightarrowb#bar{b})",["ZH_hbb","ggZH_hbb"],881),
+           backgroundComp("VH(H#rightarrowc#bar{c})",["ZH_hcc","ggZH_hcc"],2),
+           backgroundComp("VZ(Z#rightarrowc#bar{c})"+(args.mu),["VZcc"],607),
+           signalComp("VW(W#rightarrowud)"+(args.mu),["VWother"],608,True),
+           backgroundComp("VV+other",["VVother"], 623),
+           backgroundComp("VW+other",["VWother"], 624),
+           backgroundComp("Z+udsg",["Zj_ll"],821),
+           backgroundComp("Z+bj",["Zj_bj"],830),
+           backgroundComp("Z+cj",["Zj_cj"],829),
+           backgroundComp("t#bar{t}",["TT"],866),
+           backgroundComp("t#bar{t}cq",["TTcq"],877),
+           backgroundComp("t#bar{t}ud",["TTud"],888),
+           backgroundComp("Single top",["s_Top"],859)
+           ],
+
+    'Znn':[backgroundComp("VH(H#rightarrowb#bar{b})",["ZH_hbb","WH_hbb","ggZH_hbb"],881),
+           backgroundComp("VH(H#rightarrowc#bar{c})",["ZH_hcc","WH_hcc","ggZH_hcc"],2),
+           backgroundComp("VZ(Z#rightarrowc#bar{c})"+(args.mu),["VZcc"],607),
+           signalComp("VW(W#rightarrowud)"+(args.mu),["VWother"],608,True),
            backgroundComp("VV+other",["VVother"], 623),
            backgroundComp("VW+other",["VWother"], 624),
            backgroundComp("QCD",["QCD"],16),
@@ -720,6 +816,8 @@ if not args.no_signal:
       legend.AddEntry(sighist,"VZ(Z#rightarrowc#bar{c})x100","l")
     elif args.doVW:
       legend.AddEntry(sighist,"VW(W#rightarrowcq)x100","l")
+    elif args.doVWud:
+      legend.AddEntry(sighist,"VW(W#rightarrowud)x100","l")
     else:
       legend.AddEntry(sighist,"VH(H#rightarrowc#bar{c})x100","l")
   else:

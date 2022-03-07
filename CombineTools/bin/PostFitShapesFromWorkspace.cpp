@@ -46,6 +46,8 @@ int main(int argc, char* argv[]) {
   bool skip_prefit  = false;
   bool skip_proc_errs = false;
   bool total_shapes = false;
+  bool count_bins = false;
+  unsigned doonly = 0;
   std::vector<std::string> reverse_bins_;
 
   po::options_description help_config("Help");
@@ -103,7 +105,13 @@ int main(int argc, char* argv[]) {
     ("total-shapes",
       po::value<bool>(&total_shapes)->default_value(total_shapes)->implicit_value(true),
       "Save signal- and background shapes added for all channels/categories")
-    ("reverse-bins", po::value<vector<string>>(&reverse_bins_)->multitoken(), "List of bins to reverse the order for");
+    ("reverse-bins", po::value<vector<string>>(&reverse_bins_)->multitoken(), "List of bins to reverse the order for")
+    ("count",
+     po::value<bool>(&count_bins)->default_value(count_bins)->implicit_value(true),
+     "Just count number of histograms to process")
+    ("doonly",
+     po::value<unsigned>(&doonly)->default_value(doonly),
+     "Index of the job you want to run on.");
 
 
   po::variables_map vm;
@@ -187,8 +195,16 @@ int main(int argc, char* argv[]) {
   });
 
   auto bins = cmb.cp().bin_set();
-
-  TFile outfile(output.c_str(), "RECREATE");
+  if (count_bins) {
+     std::cout << "There are "<< bins.size() <<" jobs to process."<<std::endl;
+     std::cout << "Now you can parallelize the jobs using something like:\n parallel PostFitShapesFromWorkspace -d combined.txt.cmb -w ws.root -o shape --print --skip-proc-errs --doonly ::: {1.." << bins.size()<<"}\n and then hadd using:\n hadd shapes.root shape_*.root" << std::endl;
+     return 0;
+  } 
+  
+  string outputname     = output;
+  if (doonly > 0) outputname = outputname + "_" + std::to_string(doonly) +  ".root";
+  std::cout << "Will produce output file "<<outputname<<std::endl;
+  TFile outfile(outputname.c_str(), "RECREATE");
   TH1::AddDirectory(false);
 
   // Create a map of maps for storing histograms in the form:
@@ -229,7 +245,15 @@ int main(int argc, char* argv[]) {
         ch::WriteToTFile(&(iter.second), &outfile, "prefit/" + iter.first);
       }
     }
+    unsigned binindex = 0;
     for (auto bin : bins) {
+      binindex += 1;
+      if (doonly > 0) {
+        if (doonly != binindex) {
+          std::cout << "Skipping "<<bin << " ("<<binindex<<" of " << bins.size()<<")."<< std::endl;
+          continue;
+        }
+      }
       ch::CombineHarvester cmb_bin = cmb.cp().bin({bin});
       // This next line is a temporary fix for models with parameteric RooFit pdfs
       // - we try and set the number of bins to evaluate the pdf to be the same as
@@ -287,7 +311,15 @@ int main(int argc, char* argv[]) {
       cout << boost::format("%-25s %-32s\n") % "Bin" %
                   "Total relative bkg uncert. (prefit)";
       cout << string(58, '-') << "\n";
+      binindex = 0;
       for (auto bin : bins) {
+         binindex += 1;
+         if (doonly > 0) {
+            if (doonly != binindex) {
+        //      std::cout << "Skipping "<<bin << " ("<<binindex<<" of " << bins.size()<<")."<< std::endl;
+              continue;
+           }
+         }
         ch::CombineHarvester cmb_bin = cmb.cp().bin({bin});
         double rate = cmb_bin.cp().backgrounds().GetRate();
         double err = cmb_bin.cp().backgrounds().GetUncertainty();
@@ -345,8 +377,15 @@ int main(int argc, char* argv[]) {
       }
     }
 
-
+    unsigned binindex = 0;
     for (auto bin : bins) {
+      binindex += 1;
+      if (doonly > 0) {
+        if (doonly != binindex) {
+//          std::cout << "Skipping "<<bin << " ("<<binindex<<" of " << bins.size()<<")."<< std::endl;
+          continue;
+        }
+      }
       ch::CombineHarvester cmb_bin = cmb.cp().bin({bin});
       post_shapes[bin]["data_obs"] = cmb_bin.GetObservedShape();
       for (auto proc : cmb_bin.process_set()) {
@@ -420,7 +459,15 @@ int main(int argc, char* argv[]) {
       cout << boost::format("\n%-25s %-32s\n") % "Bin" %
                   "Total relative bkg uncert. (postfit)";
       cout << string(58, '-') << "\n";
+      binindex = 0;
       for (auto bin : bins) {
+      binindex += 1;
+      if (doonly > 0) {
+        if (doonly != binindex) {
+       //   std::cout << "Skipping "<<bin << " ("<<binindex<<" of " << bins.size()<<")."<< std::endl;
+          continue;
+        }
+      }
         ch::CombineHarvester cmb_bkgs = cmb.cp().bin({bin}).backgrounds();
         double rate = cmb_bkgs.GetRate();
         double err = no_sampling ? cmb_bkgs.GetUncertainty()
@@ -436,7 +483,15 @@ int main(int argc, char* argv[]) {
       cout << boost::format("\n%-25s %-20s %-10s\n") % "Bin" % "Process" %
                   "Scale factor";
       cout << string(58, '-') << "\n";
+    binindex = 0;
       for (auto bin : bins) {
+        binindex += 1;
+        if (doonly > 0) {
+          if (doonly != binindex) {
+    //        std::cout << "Skipping "<<bin << " ("<<binindex<<" of " << bins.size()<<")."<< std::endl;
+            continue;
+          }
+        }
         ch::CombineHarvester cmb_bin = cmb.cp().bin({bin});
 
         for (auto proc : cmb_bin.process_set()) {

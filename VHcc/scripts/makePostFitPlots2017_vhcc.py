@@ -11,15 +11,20 @@ import os
 
 #PRELIMINARY - FOR PAS
 CHN_DICT_SR = {
-    "Wen": [["vhcc_Wen_1_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{1L (e)}}"]],
-    "Wmn": [["vhcc_Wmn_1_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{1L (#mu)}}"]],
-    "Zee": [["vhcc_Zee_1_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (ee), High V-p_{T}}}"],["vhcc_Zee_2_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (ee), Low V-p_{T}}}"]],
-    "Zmm": [["vhcc_Zmm_1_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (#mu#mu), High V-p_{T}}}"],["vhcc_Zmm_2_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (#mu#mu), Low V-p_{T}}}"]],
-    "Znn": [["vhcc_Znn_1_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{0L}}"]]
+    "Wen": [["vhcc_Wen_1_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{1L (e)}}"],
+    ["vhcc_Wen_13_13TeV2017","Wud Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{1L (e)}}"]],
+    "Wmn": [["vhcc_Wmn_1_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{1L (#mu)}}"],
+    ["vhcc_Wmn_13_13TeV2017","Wud Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{1L (#mu)}}"]],
+    "Zee": [["vhcc_Zee_1_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (ee), High V-p_{T}}}"],["vhcc_Zee_2_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (ee), Low V-p_{T}}}"],
+    ["vhcc_Zee_13_13TeV2017","Wud Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (ee), High V-p_{T}}}"],["vhcc_Zee_14_13TeV2017","Wud Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (ee), Low V-p_{T}}}"]],
+    "Zmm": [["vhcc_Zmm_1_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (#mu#mu), High V-p_{T}}}"],["vhcc_Zmm_2_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (#mu#mu), Low V-p_{T}}}"],
+    ["vhcc_Zmm_13_13TeV2017","Wud Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (#mu#mu), High V-p_{T}}}"],["vhcc_Zmm_14_13TeV2017","Wud Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{2L (#mu#mu), Low V-p_{T}}}"]],
+    "Znn": [["vhcc_Znn_1_13TeV2017","Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{0L}}"],
+    ["vhcc_Znn_13_13TeV2017","Wud Signal Region","#splitline{#scale[1.2]{Preliminary}}{#splitline{Resolved-jet}{0L}}"]]
 }
 
 
-
+os.system("mkdir -p Prefit")
 for MODE in ['prefit']:
 #    for CHN in ['Zee','Zmm']:
 #    for CHN in ['Znn']:
@@ -28,16 +33,18 @@ for MODE in ['prefit']:
             LABEL = "%s" % CHN_DICT_SR[CHN][i][1]
             OUTNAME = "%s" % CHN_DICT_SR[CHN][i][0]
             EXTRALABEL = CHN_DICT_SR[CHN][i][2]
-            os.system(('./scripts/postFitPlot_vhcc_alt.py' \
-                       ' --file=shapes_UNBL_Nov21_Ak15Pt300_FullRun2_VZcc.root --ratio --extra_pad=0.53 --file_dir=%(OUTNAME)s --outdir="Nov21_unbl_plots/2017/VZ/"' \
-#                       ' --ratio_range 0.0,2.0 --empty_bin_error --channel=%(CHN)s --blind --x_blind_min 0.5 --x_blind_max 1.0 --x_title "BDT output" --y_title "Events" --mu ", #mu=1" --doVV=True' \
-                       ' --ratio_range 0.0,2.0 --empty_bin_error --channel=%(CHN)s --x_title "BDT output" --y_title "Events" --mu ", #mu=1" --doVZ=True' \
+            udlab = ""
+            if "_13_" in OUTNAME or "_14_" in OUTNAME: udlab="ud"
+            os.system(('../../..//scripts/postFitPlot_vhcc_alt.py' \
+                       ' --file=shapes.root --ratio --extra_pad=0.53 --file_dir=%(OUTNAME)s --outdir="Prefit/"' \
+                       ' --ratio_range 0.0,2.0 --empty_bin_error --channel=%(CHN)s --blind --x_blind_min 0.5 --x_blind_max 1.0 --x_title "BDT output" --y_title "Events" --mu ", #mu=1" --doVW%(udlab)s=True' \
+#                       ' --ratio_range 0.0,2.0 --empty_bin_error --channel=%(CHN)s --x_title "BDT output" --y_title "Events" --mu ", #mu=1" --doVW=True' \
                        ' --outname %(OUTNAME)s --mode %(MODE)s --log_y --custom_y_range --y_axis_min "5E-3" --keepPreFitSignal True --lumi="41.5 fb^{-1} (13 TeV)"'\
 #                       ' --outname %(OUTNAME)s --mode %(MODE)s --custom_y_range --y_axis_min "5E-3" --keepPreFitSignal True --lumi="41.5 fb^{-1} (13 TeV)"'\
                        ' --channel_label "%(LABEL)s" --extralabel "%(EXTRALABEL)s"' % vars()))
 
 
-for MODE in ['postfit']:
+for MODE in []: #'postfit']:
 #    for CHN in ['Zee','Zmm']:
 #    for CHN in ['Znn']:
     for CHN in ['Wen','Wmn','Zee','Zmm','Znn']:
